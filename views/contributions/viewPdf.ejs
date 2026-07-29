@@ -21,7 +21,7 @@
     <div class="header-actions">
       <% if (contribution.files && contribution.files.length > 0) { %>
         <a 
-          href="<%= contribution.files[0].url %>" 
+          href="<%= contribution.files[0].url.replace('/upload/', '/upload/fl_inline/') %>"
           target="_blank" 
           rel="noopener noreferrer" 
           class="btn-secondary-pill"
@@ -42,7 +42,7 @@
           
           <!-- Embedded PDF Viewer -->
           <iframe
-src="<%= file.url %>#toolbar=0&navpanes=0&scrollbar=0"
+src="<%= file.url.replace('/upload/', '/upload/fl_inline/') %>#toolbar=0&navpanes=0&scrollbar=0"
 class="pdf-embed">
 </iframe>
 
@@ -52,7 +52,7 @@ class="pdf-embed">
             <h3>Unable to display PDF preview inline?</h3>
             <p>Your browser or device may not support direct PDF rendering.</p>
             <a 
-              href="<%= file.url %>" 
+              href="<%= file.url.replace('/upload/', '/upload/fl_inline/') %>"
               target="_blank" 
               rel="noopener noreferrer" 
               class="btn-primary-glow"
