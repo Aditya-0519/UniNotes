@@ -93,11 +93,13 @@ exports.googleSuccess = async (req, res) => {
 exports.googleRegisterForm = async (req, res) => {
 
     if (!req.session.googleUser) {
-
         req.flash("error", "Please continue with Google first.");
-
         return res.redirect("/auth/login");
+    }
 
+    // Super Admin doesn't need an institution
+    if (req.session.googleUser.email === process.env.SUPER_ADMIN_EMAIL) {
+        return res.redirect("/auth/register/google/admin");
     }
 
     const institutions = await Institution.find({});
@@ -200,4 +202,52 @@ exports.completeGoogleRegistration = async (req, res, next) => {
 
     }
 
+};
+
+exports.completeSuperAdminRegistration = async (req, res, next) => {
+    try {
+
+        if (!req.session.googleUser) {
+            req.flash("error", "Google session expired.");
+            return res.redirect("/auth/login");
+        }
+
+        const googleUser = req.session.googleUser;
+
+        let existingUser = await User.findOne({
+            email: googleUser.email
+        });
+
+        if (!existingUser) {
+
+            existingUser = await User.create({
+                fullName: googleUser.fullName,
+                email: googleUser.email,
+                googleId: googleUser.googleId,
+                password: null,
+                role: "admin",
+                institution: null,
+                branch: null,
+                semester: null
+            });
+
+        }
+
+        req.session.googleUser = null;
+
+        req.login(existingUser, err => {
+
+            if (err) return next(err);
+
+            req.flash("success", "Welcome Super Admin!");
+
+            res.redirect("/admin");
+
+        });
+
+    } catch (err) {
+
+        next(err);
+
+    }
 };

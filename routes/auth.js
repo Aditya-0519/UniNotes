@@ -77,6 +77,11 @@ return res.redirect("/auth/login");
 );
 
 
+router.get(
+    "/register/google/admin",
+    authController.completeSuperAdminRegistration
+);
+
 
 router.get(
     "/register/google",

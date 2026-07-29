@@ -1951,7 +1951,7 @@ a {
 
 /* Override Bootstrap muted text for dark theme */
 .text-muted{
-    color:#CBD5E1 !important;
+    color:var(--text-muted) !important;
 }
 
 .text-muted i{
@@ -2042,16 +2042,9 @@ display:-webkit-box;
 
 .custom-input,
 .custom-select,
-.custom-textarea,
-.form-control,
-.form-select,
-input,
-textarea,
-select{
-
-    color:#f8fafc !important;
-    caret-color:#ffffff;
-
+.custom-textarea{
+    color:#f8fafc;
+    background:#1b2233;
 }
 
 .custom-input::placeholder,
@@ -2183,4 +2176,20 @@ background:rgba(79,70,229,.12);
 .search-input-wrapper input:focus{
     color:#111827 !important;
     background:#ffffff;
+}
+
+.form-select{
+    background-color:var(--bg-card);
+    color:var(--text-main);
+    border:1px solid var(--border-color);
+}
+
+.form-select option{
+    color:#000;
+}
+
+.form-label,
+label{
+    color:var(--text-main);
+    font-weight:600;
 }
