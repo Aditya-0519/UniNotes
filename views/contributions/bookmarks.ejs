@@ -1,0 +1,98 @@
+<main class="hub-container">
+
+  <!-- Page Header -->
+  <header class="hub-header">
+    <div class="header-top">
+      <div class="title-group">
+        <span class="badge-pill bookmark-badge">
+          <i class="fa-solid fa-bookmark"></i> Saved Resources
+        </span>
+        <h1 class="page-title">My Bookmarks</h1>
+        <p class="subtitle">Quick access to all your saved study guides and reference notes.</p>
+      </div>
+
+      <a href="/" class="btn-secondary-pill">
+        <i class="fa-solid fa-compass"></i>
+        <span>Explore Notes</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content Grid / Empty State -->
+  <section class="notes-section">
+    <% if (!bookmarks || bookmarks.length === 0) { %>
+
+      <!-- Empty State Card -->
+      <div class="empty-state-card">
+        <div class="empty-icon bookmark-empty">
+          <i class="fa-solid fa-bookmark"></i>
+        </div>
+        <h3>No bookmarked notes yet</h3>
+        <p>Save notes while browsing to keep your essential study materials right here.</p>
+        <a href="/" class="btn-primary-pill">
+          <i class="fa-solid fa-magnifying-glass"></i> Browse Available Notes
+        </a>
+      </div>
+
+    <% } else { %>
+
+      <!-- Bookmarked Cards Grid -->
+      <div class="cards-grid">
+        <% bookmarks.forEach(note => { %>
+          <article class="note-card bookmark-card">
+            <div class="card-body">
+
+              <!-- Institution Meta -->
+              <div class="card-meta-top">
+                <% if (note.institution) { %>
+                  <span class="institution-badge">
+                    <i class="fa-solid fa-building-columns icon"></i>
+                    <span><%= note.institution.shortName || note.institution.name %></span>
+                  </span>
+                <% } else { %>
+                  <span class="institution-badge generic">
+                    <i class="fa-solid fa-graduation-cap icon"></i> General Resource
+                  </span>
+                <% } %>
+              </div>
+
+              <!-- Title -->
+              <h2 class="card-title">
+                <a href="/contributions/<%= note._id %>"><%= note.title %></a>
+              </h2>
+
+              <!-- Subject Pill -->
+              <div class="subject-row">
+                <span class="subject-pill"><%= note.subject || 'General' %></span>
+              </div>
+
+            </div>
+
+            <!-- Card Footer -->
+            <div class="card-footer">
+              <div class="author-info">
+                <div class="author-avatar">
+                  <%= note.contributor?.fullName ? note.contributor.fullName.charAt(0).toUpperCase() : 'U' %>
+                </div>
+                <div class="author-details">
+                  <span class="author-name">
+                    <%= note.contributor?.fullName || 'Anonymous' %>
+                  </span>
+                  <small class="text-muted" style="font-size: 0.75rem;">Contributor</small>
+                </div>
+              </div>
+
+              <a href="/contributions/<%= note._id %>" class="btn-card-action">
+                <span>Open Notes</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+
+          </article>
+        <% }) %>
+      </div>
+
+    <% } %>
+  </section>
+
+</main>

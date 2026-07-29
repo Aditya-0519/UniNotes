@@ -1,0 +1,98 @@
+<main class="hub-container form-container-sm">
+
+  <!-- Header Section -->
+  <header class="hub-header mb-4">
+    <div class="d-flex align-items-center gap-2 mb-1">
+      <a href="/admin/institutions" class="btn-icon-action text-muted" title="Back to Institutions">
+        <i class="fa-solid fa-arrow-left"></i>
+      </a>
+      <span class="badge-pill reputation-badge">
+        <i class="fa-solid fa-pen-to-square me-1"></i> Admin Management
+      </span>
+    </div>
+    <h1 class="page-title">Edit Institution</h1>
+    <p class="subtitle mb-0">Update university details, location, and abbreviation settings.</p>
+  </header>
+
+  <!-- Edit Form Card -->
+  <section class="form-card">
+    <form action="/admin/institutions/<%= institution._id %>?_method=PATCH" method="POST">
+
+      <!-- Full Institution Name -->
+      <div class="mb-3">
+        <label for="name" class="form-label font-semibold">
+          <i class="fa-solid fa-building-columns me-1 text-muted"></i> Institution Name
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="form-control"
+          value="<%= institution.name %>"
+          required
+        >
+      </div>
+
+      <!-- Short Name / Abbreviation -->
+      <div class="mb-3">
+        <label for="shortName" class="form-label font-semibold">
+          <i class="fa-solid fa-font me-1 text-muted"></i> Short Name / Abbreviation
+        </label>
+        <input
+          type="text"
+          id="shortName"
+          name="shortName"
+          class="form-control"
+          value="<%= institution.shortName %>"
+          placeholder="e.g. IITB, MIT, Stanford"
+        >
+        <div class="form-text text-muted text-xs mt-1">
+          Used across note pills and leaderboard badges for quick reference.
+        </div>
+      </div>
+
+      <!-- Location Grid: City & State -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-6">
+          <label for="city" class="form-label font-semibold">
+            <i class="fa-solid fa-city me-1 text-muted"></i> City
+          </label>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            class="form-control"
+            value="<%= institution.city %>"
+            required
+          >
+        </div>
+
+        <div class="col-md-6">
+          <label for="state" class="form-label font-semibold">
+            <i class="fa-solid fa-map-location-dot me-1 text-muted"></i> State / Province
+          </label>
+          <input
+            type="text"
+            id="state"
+            name="state"
+            class="form-control"
+            value="<%= institution.state %>"
+            required
+          >
+        </div>
+      </div>
+
+      <!-- Form Action Buttons -->
+      <div class="d-flex align-items-center justify-content-between pt-2">
+        <a href="/admin/institutions" class="btn-secondary-pill">
+          Cancel
+        </a>
+        <button type="submit" class="btn-primary-glow">
+          <i class="fa-solid fa-floppy-disk me-1"></i> Save Changes
+        </button>
+      </div>
+
+    </form>
+  </section>
+
+</main>

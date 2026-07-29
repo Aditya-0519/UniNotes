@@ -1,0 +1,135 @@
+<main class="hub-container w-100 px-3 px-md-4">
+
+  <!-- Admin Header Row -->
+  <header class="hub-header d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+      <div class="d-flex align-items-center gap-2 mb-1">
+        <span class="badge-pill reputation-badge">
+          <i class="fa-solid fa-shield-halved me-1"></i> Admin Console
+        </span>
+      </div>
+      <h1 class="page-title">Platform Overview</h1>
+      <p class="subtitle mb-0">Monitor users, institutions, and moderation queues in real time.</p>
+    </div>
+
+    <!-- Quick Actions Header Buttons -->
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+      <a href="/admin/institutions/new" class="btn-primary-glow btn-sm">
+        <i class="fa-solid fa-plus me-1"></i> Add Institution
+      </a>
+      <a href="/admin/institution-requests" class="btn-secondary-pill btn-sm">
+        <i class="fa-solid fa-clipboard-list me-1"></i> Requests
+      </a>
+      <a href="/" class="btn-icon-action text-muted" title="View Public Home">
+        <i class="fa-solid fa-house"></i>
+      </a>
+    </div>
+  </header>
+
+  <!-- Metric Overview Grid -->
+  <section class="admin-stats-grid mb-5">
+
+    <!-- TOTAL USERS -->
+    <a href="/admin/users" class="stat-card-link">
+      <article class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-icon-wrapper primary">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <span class="stat-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+        </div>
+        <div class="stat-card-body">
+          <h2 class="stat-number"><%= totalUsers %></h2>
+          <span class="stat-title">Total Registered Users</span>
+        </div>
+      </article>
+    </a>
+
+    <!-- INSTITUTIONS -->
+    <a href="/admin/institutions" class="stat-card-link">
+      <article class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-icon-wrapper warning">
+            <i class="fa-solid fa-building-columns"></i>
+          </div>
+          <span class="stat-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+        </div>
+        <div class="stat-card-body">
+          <h2 class="stat-number"><%= totalInstitutions %></h2>
+          <span class="stat-title">Active Institutions</span>
+        </div>
+      </article>
+    </a>
+
+    <!-- APPROVED NOTES -->
+    <a href="/admin/contributions/approved" class="stat-card-link">
+      <article class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-icon-wrapper success">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <span class="stat-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+        </div>
+        <div class="stat-card-body">
+          <h2 class="stat-number"><%= approvedNotes %></h2>
+          <span class="stat-title">Approved Notes</span>
+        </div>
+      </article>
+    </a>
+
+    <!-- PENDING NOTES -->
+    <a href="/admin/contributions/pending" class="stat-card-link">
+      <article class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-icon-wrapper pending">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+          <span class="stat-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+        </div>
+        <div class="stat-card-body">
+          <h2 class="stat-number"><%= pendingNotes %></h2>
+          <span class="stat-title">Pending Moderation</span>
+        </div>
+      </article>
+    </a>
+
+    <!-- REJECTED NOTES -->
+    <a href="/admin/contributions/rejected" class="stat-card-link">
+      <article class="stat-card">
+        <div class="stat-card-header">
+          <div class="stat-icon-wrapper danger">
+            <i class="fa-solid fa-circle-xmark"></i>
+          </div>
+          <span class="stat-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+        </div>
+        <div class="stat-card-body">
+          <h2 class="stat-number"><%= rejectedNotes %></h2>
+          <span class="stat-title">Rejected Submissions</span>
+        </div>
+      </article>
+    </a>
+
+  </section>
+
+  <!-- Section 2: Quick Management Links Bar -->
+  <section class="form-card p-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div>
+        <h3 class="card-title mb-1">
+          <i class="fa-solid fa-sliders me-2"></i> Institution Management
+        </h3>
+        <p class="text-muted text-sm mb-0">Review student-submitted universities and expand supported campuses.</p>
+      </div>
+
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="/admin/institutions" class="btn-secondary-pill">
+          <i class="fa-solid fa-building-columns me-1"></i> View All Institutions
+        </a>
+        <a href="/admin/institution-requests" class="btn-primary-pill">
+          <i class="fa-solid fa-paper-plane me-1"></i> Review Requests
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>

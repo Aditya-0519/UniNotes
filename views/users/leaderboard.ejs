@@ -1,0 +1,184 @@
+<main class="hub-container form-container-sm">
+
+  <!-- Page Header -->
+  <header class="hub-header text-center">
+    <div class="title-group mx-auto">
+      <span class="badge-pill leaderboard-badge">
+        <i class="fa-solid fa-trophy"></i> Community Champions
+      </span>
+      <h1 class="page-title">Top Contributors</h1>
+      <p class="subtitle">Celebrating the most active students and researchers sharing knowledge.</p>
+    </div>
+  </header>
+
+  <!-- Top 3 Podium Cards Section -->
+  <% if (users && users.length > 0) { %>
+    <section class="podium-container mb-5">
+      <div class="podium-grid">
+        
+        <!-- Second Place (Silver) -->
+        <% if (users[1]) { %>
+          <div class="podium-card rank-2">
+            <div class="podium-badge silver">
+              <i class="fa-solid fa-medal"></i> 2
+            </div>
+            <div class="podium-avatar">
+              <i class="fa-solid fa-user-graduate"></i>
+            </div>
+            <h3 class="podium-name">
+              <a href="/users/<%= users[1]._id %>"><%= users[1].fullName %></a>
+            </h3>
+            <span class="podium-inst">
+              <%= users[1].institution ? (users[1].institution.shortName || users[1].institution.name) : "Student" %>
+            </span>
+            <div class="podium-score">
+              <span class="score-star"><i class="fa-solid fa-star"></i></span>
+              <strong><%= users[1].reputation %></strong>
+              <small>pts</small>
+            </div>
+            <span class="badge-pill reputation-badge mt-2">
+              <%= badges.getBadge(users[1].reputation) %>
+            </span>
+          </div>
+        <% } %>
+
+        <!-- First Place (Gold) -->
+        <% if (users[0]) { %>
+          <div class="podium-card rank-1">
+            <div class="podium-crown">
+              <i class="fa-solid fa-crown"></i>
+            </div>
+            <div class="podium-badge gold">
+              <i class="fa-solid fa-trophy"></i> 1
+            </div>
+            <div class="podium-avatar hero">
+              <i class="fa-solid fa-user-astronaut"></i>
+            </div>
+            <h3 class="podium-name">
+              <a href="/users/<%= users[0]._id %>"><%= users[0].fullName %></a>
+            </h3>
+            <span class="podium-inst">
+              <%= users[0].institution ? (user0 = users[0].institution.shortName || users[0].institution.name) : "Top Contributor" %>
+            </span>
+            <div class="podium-score">
+              <span class="score-star"><i class="fa-solid fa-star"></i></span>
+              <strong><%= users[0].reputation %></strong>
+              <small>pts</small>
+            </div>
+            <span class="badge-pill reputation-badge mt-2">
+              <%= badges.getBadge(users[0].reputation) %>
+            </span>
+          </div>
+        <% } %>
+
+        <!-- Third Place (Bronze) -->
+        <% if (users[2]) { %>
+          <div class="podium-card rank-3">
+            <div class="podium-badge bronze">
+              <i class="fa-solid fa-award"></i> 3
+            </div>
+            <div class="podium-avatar">
+              <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <h3 class="podium-name">
+              <a href="/users/<%= users[2]._id %>"><%= users[2].fullName %></a>
+            </h3>
+            <span class="podium-inst">
+              <%= users[2].institution ? (users[2].institution.shortName || users[2].institution.name) : "Student" %>
+            </span>
+            <div class="podium-score">
+              <span class="score-star"><i class="fa-solid fa-star"></i></span>
+              <strong><%= users[2].reputation %></strong>
+              <small>pts</small>
+            </div>
+            <span class="badge-pill reputation-badge mt-2">
+              <%= badges.getBadge(users[2].reputation) %>
+            </span>
+          </div>
+        <% } %>
+
+      </div>
+    </section>
+  <% } %>
+
+  <!-- Full Rankings Table Card -->
+  <section class="form-card p-0 overflow-hidden">
+    <div class="table-responsive">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 70px;">Rank</th>
+            <th>Contributor</th>
+            <th>Institution</th>
+            <th class="text-center">Uploads</th>
+            <th>Reputation</th>
+            <th>Badge</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (!users || users.length === 0) { %>
+            <tr>
+              <td colspan="6" class="text-center py-4 text-muted">
+                No contributors on the leaderboard yet.
+              </td>
+            </tr>
+          <% } else { %>
+            <% users.forEach((user, index) => { %>
+              <tr class="<%= index < 3 ? 'top-rank-row' : '' %>">
+                
+                <!-- Rank Icon/Number -->
+                <td class="text-center fw-bold">
+                  <% if (index === 0) { %>
+                    <span class="rank-icon gold-text"><i class="fa-solid fa-trophy"></i></span>
+                  <% } else if (index === 1) { %>
+                    <span class="rank-icon silver-text"><i class="fa-solid fa-medal"></i></span>
+                  <% } else if (index === 2) { %>
+                    <span class="rank-icon bronze-text"><i class="fa-solid fa-award"></i></span>
+                  <% } else { %>
+                    <span class="rank-num">#<%= index + 1 %></span>
+                  <% } %>
+                </td>
+
+                <!-- User Name -->
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <a href="/users/<%= user._id %>" class="user-table-link">
+                      <%= user.fullName %>
+                    </a>
+                  </div>
+                </td>
+
+                <!-- Institution -->
+                <td class="institution-cell">
+                  <%= user.institution ? (user.institution.shortName || user.institution.name) : "-" %>
+                </td>
+
+                <!-- Contribution Count -->
+                <td class="text-center font-monospace font-semibold">
+                  <%= user.contributionCount %>
+                </td>
+
+                <!-- Reputation Score -->
+                <td>
+                  <span class="reputation-score">
+                    <i class="fa-solid fa-star text-warning me-1"></i>
+                    <strong><%= user.reputation %></strong>
+                  </span>
+                </td>
+
+                <!-- Badge -->
+                <td>
+                  <span class="status-pill status-approved">
+                    <%= badges.getBadge(user.reputation) %>
+                  </span>
+                </td>
+
+              </tr>
+            <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>

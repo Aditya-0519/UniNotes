@@ -1,0 +1,134 @@
+<main class="hub-container form-container-sm">
+
+  <!-- Profile Header Card -->
+  <section class="profile-card mb-4">
+    <div class="profile-header-top">
+      <div class="profile-avatar">
+        <i class="fa-solid fa-user-graduate"></i>
+      </div>
+      <div class="profile-info">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <h1 class="profile-name"><%= user.fullName %></h1>
+          <span class="badge-pill reputation-badge">
+            <i class="fa-solid fa-award me-1"></i> <%= badge %>
+          </span>
+        </div>
+        <p class="profile-email"><%= user.email %></p>
+        <p class="profile-institution">
+          <i class="fa-solid fa-building-columns me-1"></i>
+          <% if (user.institution) { %>
+            <%= user.institution.shortName || user.institution.name %>
+          <% } else { %>
+            Unknown Institution
+          <% } %>
+        </p>
+      </div>
+    </div>
+
+    <hr class="card-divider my-3">
+
+    <!-- Reputation & Engagement Stats Grid -->
+    <div class="profile-stats-grid">
+      <div class="profile-stat-box">
+        <span class="stat-value text-primary">
+          <i class="fa-solid fa-star me-1"></i> <%= user.reputation %>
+        </span>
+        <span class="stat-label">Reputation Points</span>
+      </div>
+      <div class="profile-stat-box">
+        <span class="stat-value"><%= contributions.length %></span>
+        <span class="stat-label">Uploads</span>
+      </div>
+      <div class="profile-stat-box">
+        <span class="stat-value"><%= totalViews %></span>
+        <span class="stat-label">Total Views</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contributions Section -->
+  <section class="user-contributions">
+    <div class="section-header-inline mb-3">
+      <h2 class="section-title">
+        <i class="fa-solid fa-folder-user me-2"></i> My Contributions
+      </h2>
+      <a href="/contributions/new" class="btn-primary-glow btn-sm">
+        <i class="fa-solid fa-plus me-1"></i> New Upload
+      </a>
+    </div>
+
+    <% if (contributions.length === 0) { %>
+
+      <!-- Empty State -->
+      <div class="empty-state-card">
+        <div class="empty-icon info">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+        </div>
+        <h3>No contributions yet</h3>
+        <p>Start sharing study notes and past papers to build your reputation.</p>
+        <a href="/contributions/new" class="btn-primary-pill">
+          <i class="fa-solid fa-plus me-1"></i> Upload Your First Note
+        </a>
+      </div>
+
+    <% } else { %>
+
+      <!-- List of User Notes -->
+      <div class="contributions-list">
+        <% contributions.forEach(note => { %>
+          <article class="note-card status-card mb-3">
+            <div class="card-body">
+
+              <!-- Meta Row: Subject & Status -->
+              <div class="card-meta-top d-flex justify-content-between align-items-center width-100 mb-2">
+                <span class="subject-pill"><%= note.subject || 'General' %></span>
+
+                <!-- Status Badge -->
+                <% if (note.status === "approved") { %>
+                  <span class="status-pill status-approved">
+                    <i class="fa-solid fa-circle-check me-1"></i> Approved
+                  </span>
+                <% } else if (note.status === "pending") { %>
+                  <span class="status-pill status-pending">
+                    <i class="fa-solid fa-clock me-1"></i> Pending
+                  </span>
+                <% } else { %>
+                  <span class="status-pill status-rejected">
+                    <i class="fa-solid fa-circle-xmark me-1"></i> Rejected
+                  </span>
+                <% } %>
+              </div>
+
+              <!-- Title -->
+              <h3 class="card-title">
+                <a href="/contributions/<%= note._id %>"><%= note.title %></a>
+              </h3>
+
+            </div>
+
+            <!-- Card Actions Footer -->
+            <div class="card-footer d-flex justify-content-between align-items-center">
+              <a href="/contributions/<%= note._id %>" class="btn-secondary-pill btn-sm">
+                <i class="fa-solid fa-book-open me-1"></i> View Note
+              </a>
+
+              <form action="/contributions/<%= note._id %>?_method=DELETE" method="POST" class="d-inline">
+                <button
+                  type="submit"
+                  class="btn-icon-danger"
+                  onclick="return confirm('Are you sure you want to delete this note?')"
+                  title="Delete Note"
+                >
+                  <i class="fa-solid fa-trash-can me-1"></i> Delete
+                </button>
+              </form>
+            </div>
+
+          </article>
+        <% }) %>
+      </div>
+
+    <% } %>
+  </section>
+
+</main>

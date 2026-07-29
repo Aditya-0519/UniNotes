@@ -1,0 +1,137 @@
+<div class="auth-container">
+  <div class="auth-card auth-card-lg">
+
+    <div class="auth-header">
+      <div class="auth-logo">📚</div>
+      <h1>Create your account</h1>
+      <p>Join UniNotes and start sharing knowledge with students.</p>
+    </div>
+
+    <form action="/auth/register" method="POST">
+
+      <!-- Full Name -->
+      <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input
+          type="text"
+          name="fullName"
+          class="form-control"
+          placeholder="Enter your full name"
+          required>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input
+          type="email"
+          name="email"
+          class="form-control"
+          placeholder="Enter your email"
+          required>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-4">
+        <label class="form-label">Password</label>
+        <input
+          type="password"
+          name="password"
+          class="form-control"
+          placeholder="Create a strong password"
+          required>
+      </div>
+
+      <div class="row">
+
+        <!-- Institution -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Institution</label>
+
+          <select name="institutionId" class="form-select" required>
+            <% institutions.forEach(inst => { %>
+              <option value="<%= inst._id %>">
+                <%= inst.name %> (<%= inst.shortName || '' %>)
+              </option>
+            <% }) %>
+          </select>
+
+          <div class="mt-2">
+            <a
+              href="/institutionRequests/new"
+              class="small text-decoration-none">
+              <i class="fa-solid fa-plus-circle me-1"></i>
+              Can't find your college?
+            </a>
+          </div>
+        </div>
+
+        <!-- Semester -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Semester</label>
+
+          <select name="semester" class="form-select" required>
+            <option value="">Select Semester</option>
+
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+            <option value="3">Semester 3</option>
+            <option value="4">Semester 4</option>
+            <option value="5">Semester 5</option>
+            <option value="6">Semester 6</option>
+            <option value="7">Semester 7</option>
+            <option value="8">Semester 8</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Branch -->
+      <div class="mb-4">
+        <label class="form-label">Branch</label>
+
+        <select name="branch" class="form-select" required>
+
+          <option value="">Select Branch</option>
+
+          <option>Computer Science & Engineering</option>
+          <option>Information Technology</option>
+          <option>Artificial Intelligence</option>
+          <option>Electronics & Communication</option>
+          <option>Electrical Engineering</option>
+          <option>Mechanical Engineering</option>
+          <option>Civil Engineering</option>
+          <option>Chemical Engineering</option>
+          <option>Biotechnology</option>
+          <option>Mathematics</option>
+          <option>Physics</option>
+          <option>Commerce</option>
+          <option>Management</option>
+          <option>Other</option>
+
+        </select>
+      </div>
+
+      <button type="submit" class="btn-primary-glow w-100">
+        <i class="fa-solid fa-user-plus me-2"></i>
+        Create Account
+      </button>
+
+    </form>
+
+    <div class="divider">
+      <span>OR</span>
+    </div>
+
+    <a href="/auth/google" class="btn-google">
+      <i class="fa-brands fa-google"></i>
+      Sign up with Google
+    </a>
+
+    <p class="auth-footer">
+      Already have an account?
+      <a href="/auth/login">Sign in</a>
+    </p>
+
+  </div>
+</div>

@@ -1,0 +1,112 @@
+<h2 class="mb-4">
+Complete Your Registration
+</h2>
+
+<p class="text-muted">
+Welcome <strong><%= googleUser.fullName %></strong><br>
+<%= googleUser.email %>
+</p>
+
+<form action="/auth/register/google" method="POST">
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Institution
+
+</label>
+
+<select
+name="institutionId"
+class="form-select"
+required>
+
+<% institutions.forEach(inst => { %>
+
+<option value="<%= inst._id %>">
+
+<%= inst.name %>
+
+</option>
+
+<% }) %>
+
+</select>
+
+<div class="mt-2">
+
+<a
+href="/institutionRequests/new">
+
+Can't find your college?
+
+Request My College
+
+</a>
+
+</div>
+
+</div>
+
+<div class="mb-3">
+
+<label>
+
+Branch
+
+</label>
+
+<select
+name="branch"
+class="form-select"
+required>
+
+<option>CSE</option>
+<option>IT</option>
+<option>ECE</option>
+<option>EEE</option>
+<option>Mechanical</option>
+<option>Civil</option>
+<option>Chemical</option>
+<option>Biotechnology</option>
+
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label>
+
+Semester
+
+</label>
+
+<select
+name="semester"
+class="form-select"
+required>
+
+<% for(let i=1;i<=8;i++){ %>
+
+<option value="<%= i %>">
+
+Semester <%= i %>
+
+</option>
+
+<% } %>
+
+</select>
+
+</div>
+
+<button
+class="btn btn-primary">
+
+Complete Registration
+
+</button>
+
+</form>

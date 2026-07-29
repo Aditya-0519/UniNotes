@@ -1,0 +1,82 @@
+<nav class="navbar navbar-expand-lg sticky-top custom-navbar">
+  <div class="container">
+    
+    <!-- Brand Logo -->
+    <a class="navbar-brand d-flex align-items-center gap-2 fw-bold fs-4" href="/">
+      <!-- <span class="brand-icon">📚</span> -->
+      <span class="brand-text">UniNotes</span>
+    </a>
+    
+    <!-- Mobile Toggler -->
+    <button class="navbar-toggler border-0 shadow-none py-1 px-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fa-solid fa-bars fs-4 nav-toggler-icon"></i>
+    </button>
+
+    <!-- Navigation Items -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto ms-lg-4 gap-lg-1 my-2 my-lg-0">
+
+        <li class="nav-item">
+          <a class="nav-link custom-nav-link" href="/contributions">
+            <i class="fa-solid fa-compass nav-icon"></i>
+            <span>Browse Notes</span>
+          </a>
+        </li>
+
+        <% if (currentUser) { %>
+
+        <li class="nav-item">
+          <a href="/contributions/new" class="nav-link custom-nav-link btn-upload-navbar">
+            <i class="fa-solid fa-arrow-up-from-bracket nav-icon"></i>
+            <span>Upload</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link custom-nav-link" href="/contributions/bookmarks">
+            <i class="fa-solid fa-bookmark nav-icon"></i>
+            <span>Bookmarks</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link custom-nav-link" href="/users/leaderboard">
+            <i class="fa-solid fa-trophy nav-icon"></i>
+            <span>Leaderboard</span>
+          </a>
+        </li>
+
+        <% } %>
+
+      </ul>
+
+      <!-- User Auth Actions -->
+      <div class="d-flex align-items-lg-center align-items-stretch flex-column flex-lg-row gap-2 pt-3 pt-lg-0 border-top border-lg-0 mt-2 mt-lg-0 auth-actions-wrapper">
+        <% if (currentUser) { %>
+          <div class="user-pill d-flex align-items-center me-lg-2">
+            <span class="avatar-placeholder">
+              <%= currentUser.fullName ? currentUser.fullName.charAt(0).toUpperCase() : 'U' %>
+            </span>
+            <div class="user-details ms-2">
+              <a href="/users/profile" class="text-decoration-none profile-link">
+                <small class="user-welcome">Welcome back,</small>
+                <strong class="user-name"><%= currentUser.fullName.split(" ")[0] %></strong>
+              </a>
+            </div>
+          </div>
+          <a href="/auth/logout" class="btn btn-logout-pill">
+            <i class="fa-solid fa-arrow-right-from-bracket me-1"></i>
+            <span>Logout</span>
+          </a>
+        <% } else { %>
+          <a href="/auth/login" class="btn btn-ghost-pill">Login</a>
+          <a href="/auth/register" class="btn btn-primary-pill shadow-sm">
+            <span>Register</span>
+            <i class="fa-solid fa-user-plus ms-1"></i>
+          </a>
+        <% } %>
+      </div>
+    </div>
+
+  </div>
+</nav>

@@ -1,0 +1,34 @@
+<main class="hub-container form-container-sm text-center">
+
+  <!-- Error State Card -->
+  <section class="error-card">
+    
+    <!-- Error Visual Icon -->
+    <div class="error-icon-wrapper">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
+
+    <!-- Error Title & Heading -->
+    <h1 class="error-title">Oops! Something went wrong</h1>
+
+    <!-- Dynamic Error Message -->
+    <p class="error-message">
+      <%= message || "We encountered an unexpected issue while processing your request." %>
+    </p>
+
+    <!-- Action Buttons Group -->
+    <div class="error-actions-group">
+      <a href="/" class="btn-primary-glow">
+        <i class="fa-solid fa-house"></i>
+        <span>Back to Home</span>
+      </a>
+
+      <button onclick="window.history.back()" class="btn-secondary-pill">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Go Back</span>
+      </button>
+    </div>
+
+  </section>
+
+</main>

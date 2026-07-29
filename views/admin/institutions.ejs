@@ -1,0 +1,55 @@
+<h2 class="mb-4">Manage Institutions</h2>
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Name</th>
+<th>Short Name</th>
+<th>City</th>
+<th>State</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<% institutions.forEach(institution=>{ %>
+
+<tr>
+
+<td><%= institution.name %></td>
+
+<td>
+
+<%= institution.shortName || "-" %>
+
+</td>
+
+<td><%= institution.city %></td>
+
+<td><%= institution.state %></td>
+
+<td>
+
+<a
+href="/admin/institutions/<%= institution._id %>/edit"
+class="btn btn-primary btn-sm">
+
+Edit
+
+</a>
+
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>

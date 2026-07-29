@@ -1,0 +1,289 @@
+<main class="hub-container">
+
+  <!-- Main Grid Layout -->
+  <div class="row g-4">
+
+    <!-- Left Main Content Area -->
+    <div class="col-lg-8">
+      
+      <!-- Article Details Card -->
+      <article class="detail-card mb-4">
+        
+        <!-- Header / Meta Info -->
+        <header class="detail-header">
+          <div class="meta-top">
+            <span class="subject-pill"><%= contribution.subject %></span>
+            <% if (contribution.courseCode) { %>
+              <span class="code-pill"><%= contribution.courseCode %></span>
+            <% } %>
+          </div>
+
+          <h1 class="detail-title"><%= contribution.title %></h1>
+
+          <!-- Quick Stats Row -->
+          <div class="detail-stats-bar">
+            <span class="stat-item">
+              <i class="fa-regular fa-eye"></i> <%= contribution.stats.views %> Views
+            </span>
+            <span class="stat-item">
+              <i class="fa-solid fa-heart text-danger"></i> <%= contribution.likes.length %> Likes
+            </span>
+            <span class="stat-item">
+              <i class="fa-regular fa-comment"></i> <%= contribution.comments.length %> Comments
+            </span>
+          </div>
+        </header>
+
+        <!-- Description Section -->
+        <section class="detail-body">
+          <h2 class="section-subheading">Description</h2>
+          <p class="description-text"><%= contribution.description %></p>
+        </section>
+
+        <!-- Action Bar: Bookmark & Like Buttons -->
+        <div class="detail-actions-bar">
+          
+          <!-- Bookmark Action -->
+          <form action="/contributions/<%= contribution._id %>/bookmark" method="POST" class="d-inline">
+            <% if (isBookmarked) { %>
+              <button type="submit" class="btn-action active-bookmark">
+                <i class="fa-solid fa-bookmark"></i>
+                <span>Bookmarked</span>
+              </button>
+            <% } else { %>
+              <button type="submit" class="btn-action">
+                <i class="fa-regular fa-bookmark"></i>
+                <span>Bookmark</span>
+              </button>
+            <% } %>
+          </form>
+
+          <!-- Like Action -->
+          <form action="/contributions/<%= contribution._id %>/like" method="POST" class="d-inline">
+            <% const isLiked = currentUser && contribution.likes.some(id => id.equals(currentUser._id)); %>
+            <button type="submit" class="btn-action <%= isLiked ? 'active-like' : '' %>">
+              <i class="<%= isLiked ? 'fa-solid fa-heart' : 'fa-regular fa-heart' %>"></i>
+              <span><%= isLiked ? 'Liked' : 'Like' %></span>
+              <span class="count-badge"><%= contribution.likes.length %></span>
+            </button>
+          </form>
+
+        </div>
+
+      </article>
+
+      <!-- Attached Files Card -->
+      <section class="detail-card mb-4">
+        <h2 class="section-subheading">
+          <i class="fa-solid fa-paperclip me-2"></i> Attached Files
+        </h2>
+
+        <% if (contribution.files && contribution.files.length > 0) { %>
+          <div class="files-list">
+            <% contribution.files.forEach(file => { %>
+              <div class="file-item-card">
+                <div class="file-info">
+                  <div class="file-icon">
+                    <i class="fa-solid fa-file-pdf"></i>
+                  </div>
+                  <div class="file-details">
+                    <h3 class="file-name"><%= file.fileName %></h3>
+                    <span class="file-type">Study Document</span>
+                  </div>
+                </div>
+                <a href="/contributions/<%= contribution._id %>/view" class="btn-primary-glow btn-sm">
+                  <i class="fa-solid fa-book-open"></i> Read Notes
+                </a>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <div class="empty-state-sm">
+            <i class="fa-solid fa-folder-open"></i>
+            <p>No attached files available for this contribution.</p>
+          </div>
+        <% } %>
+      </section>
+
+      <!-- Comments Section -->
+      <section class="detail-card">
+        <h2 class="section-subheading">
+          <i class="fa-regular fa-comments me-2"></i> Comments (<%= contribution.comments.length %>)
+        </h2>
+
+        <!-- New Comment Form -->
+        <% if (currentUser) { %>
+          <form action="/contributions/<%= contribution._id %>/comments" method="POST" class="comment-form mb-4">
+            <div class="form-group mb-3">
+              <textarea
+                name="text"
+                class="form-control custom-textarea"
+                rows="3"
+                placeholder="Write your thoughts or ask a question..."
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn-primary-glow">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Post Comment</span>
+            </button>
+          </form>
+        <% } else { %>
+          <div class="login-prompt mb-4">
+            <i class="fa-solid fa-circle-info me-2"></i>
+            <span>Please login to post a comment or discussion.</span>
+          </div>
+        <% } %>
+
+        <!-- Comments Feed -->
+        <div class="comments-feed">
+          <% if (contribution.comments.length === 0) { %>
+            <div class="empty-state-sm">
+              <p>No comments yet. Be the first to share your thoughts!</p>
+            </div>
+          <% } %>
+
+          <% contribution.comments.forEach(comment => { %>
+            <div class="comment-card">
+              <div class="comment-header">
+                <div class="user-meta">
+                  <div class="avatar-sm">
+                    <i class="fa-solid fa-user"></i>
+                  </div>
+                  <div>
+                    <h4 class="user-name">
+                      <%= comment.author ? comment.author.fullName : "Deleted User" %>
+                    </h4>
+                    <span class="comment-date"><%= comment.createdAt.toLocaleDateString() %></span>
+                  </div>
+                </div>
+
+                <!-- Delete Action -->
+                <% if (currentUser && comment.author && comment.author._id.toString() === currentUser._id.toString()) { %>
+                  <form action="/contributions/<%= contribution._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST" class="d-inline">
+                    <button type="submit" class="btn-icon-danger" onclick="return confirm('Delete this comment?')" title="Delete Comment">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </form>
+                <% } %>
+              </div>
+
+              <p class="comment-text"><%= comment.text %></p>
+
+              <!-- Inline Edit Comment Form (for Author) -->
+              <% if (currentUser && comment.author && comment.author._id.toString() === currentUser._id.toString()) { %>
+                <details class="edit-comment-details mt-2">
+                  <summary class="btn-link-sm">Edit Comment</summary>
+                  <form action="/contributions/<%= contribution._id %>/comments/<%= comment._id %>?_method=PATCH" method="POST" class="mt-2">
+                    <div class="input-group">
+                      <input type="text" name="text" class="form-control custom-input" value="<%= comment.text %>" required>
+                      <button type="submit" class="btn-primary-glow btn-sm">Save</button>
+                    </div>
+                  </form>
+                </details>
+              <% } %>
+            </div>
+          <% }) %>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Right Sidebar Area -->
+    <aside class="col-lg-4">
+      
+      <!-- Contributor Meta Card -->
+      <div class="sidebar-card mb-4">
+        <h3 class="sidebar-title">Resource Info</h3>
+
+        <!-- User Info -->
+        <div class="contributor-profile">
+          <div class="avatar-lg">
+            <i class="fa-solid fa-user-graduate"></i>
+          </div>
+          <div class="profile-details">
+            <% if (contribution.contributor) { %>
+              <a href="/users/<%= contribution.contributor._id %>" class="contributor-name">
+                <%= contribution.contributor.fullName %>
+              </a>
+            <% } else { %>
+              <span class="contributor-name text-muted">Deleted User</span>
+            <% } %>
+            <span class="institution-name">
+              <i class="fa-solid fa-building-columns me-1"></i>
+              <% if (contribution.institution) { %>
+                <%= contribution.institution.shortName || contribution.institution.name %>
+              <% } else { %>
+                Unknown Institution
+              <% } %>
+            </span>
+          </div>
+        </div>
+
+        <hr class="card-divider">
+
+        <!-- Spec List -->
+        <ul class="spec-list">
+          <li class="spec-item">
+            <span class="spec-label"><i class="fa-solid fa-layer-group"></i> Semester</span>
+            <span class="spec-value">Semester <%= contribution.semester %></span>
+          </li>
+          <li class="spec-item">
+            <span class="spec-label"><i class="fa-solid fa-graduation-cap"></i> Branch</span>
+            <span class="spec-value"><%= contribution.branch %></span>
+          </li>
+          <li class="spec-item">
+            <span class="spec-label"><i class="fa-solid fa-book"></i> Subject</span>
+            <span class="spec-value"><%= contribution.subject %></span>
+          </li>
+          <li class="spec-item">
+            <span class="spec-label"><i class="fa-solid fa-code"></i> Course Code</span>
+            <span class="spec-value"><%= contribution.courseCode || "N/A" %></span>
+          </li>
+        </ul>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- Related Notes Section -->
+  <section class="related-section mt-5">
+    <div class="section-header-inline mb-4">
+      <h2 class="section-title"><i class="fa-solid fa-books me-2"></i> Related Notes</h2>
+    </div>
+
+    <% if (relatedNotes.length === 0) { %>
+      <p class="text-secondary-ui">No related notes found for this topic.</p>
+    <% } else { %>
+      <div class="row g-3">
+        <% relatedNotes.forEach(note => { %>
+          <div class="col-md-6 col-lg-4">
+            <article class="note-card">
+              <div class="card-body">
+                <span class="subject-pill"><%= note.subject %></span>
+                <h3 class="card-title mt-2">
+                  <a href="/contributions/<%= note._id %>"><%= note.title %></a>
+                </h3>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">
+                  By 
+                  <% if (note.contributor) { %>
+                    <a href="/users/<%= note.contributor._id %>" class="author-link"><%= note.fullName || note.contributor.fullName %></a>
+                  <% } else { %>
+                    Deleted User
+                  <% } %>
+                </small>
+                <a href="/contributions/<%= note._id %>" class="btn-card-action">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </a>
+              </div>
+            </article>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </section>
+
+</main>

@@ -1,0 +1,68 @@
+<h2><%= institution.name %></h2>
+
+<p>
+
+📍 <%= institution.city %>, <%= institution.state %>
+
+</p>
+
+<p>
+
+👥 Contributors : <%= contributorCount %>
+
+</p>
+
+<hr>
+
+<h4>Latest Notes</h4>
+
+<% if(contributions.length===0){ %>
+
+<p>No notes yet.</p>
+
+<% } %>
+
+<% contributions.forEach(note=>{ %>
+
+<div class="card mb-3">
+
+<div class="card-body">
+
+<h5><%= note.title %></h5>
+
+<p><%= note.subject %></p>
+
+<p>
+
+By
+
+<% if (note.contributor) { %>
+
+<p>
+By
+<a href="/users/<%= note.contributor._id %>">
+    <%= note.contributor.fullName %>
+</a>
+</p>
+
+<% } else { %>
+
+<p class="text-muted">
+By Deleted User
+</p>
+
+<% } %>
+
+</p>
+
+<a href="/contributions/<%= note._id %>">
+
+View Notes
+
+</a>
+
+</div>
+
+</div>
+
+<% }) %>

@@ -1,0 +1,133 @@
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>All Users</h2>
+
+        <a href="/admin" class="btn btn-secondary">
+            Back
+        </a>
+
+    </div>
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Name</th>
+
+                            <th>Email</th>
+
+                            <th>College</th>
+
+                            <th>Branch</th>
+
+                            <th>Semester</th>
+
+                            <th>Role</th>
+
+                            <th>Joined</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <% users.forEach(user => { %>
+
+                        <tr>
+
+                            <td>
+
+                                <strong><%= user.fullName %></strong>
+
+                            </td>
+
+                            <td>
+
+                                <%= user.email %>
+
+                            </td>
+
+                            <td>
+
+                                <%= user.institution ? (user.institution.shortName || user.institution.name) : "N/A" %>
+
+                            </td>
+
+                            <td>
+
+                                <%= user.branch %>
+
+                            </td>
+
+                            <td>
+
+                                Semester <%= user.semester %>
+
+                            </td>
+
+                            <td>
+
+                                <% if(user.role==="admin"){ %>
+
+                                    <span class="badge bg-danger">
+
+                                        Admin
+
+                                    </span>
+
+                                <% } else { %>
+
+                                    <span class="badge bg-primary">
+
+                                        Student
+
+                                    </span>
+
+                                <% } %>
+
+                            </td>
+
+                            <td>
+
+                                <%= user.createdAt.toLocaleDateString() %>
+
+                            </td>
+
+                            <td>
+
+                                <a href="/users/<%= user._id %>" class="btn btn-sm btn-primary">
+
+                                    View
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        <% }) %>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

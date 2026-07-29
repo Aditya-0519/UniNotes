@@ -1,0 +1,149 @@
+<main class="hub-container w-100 px-3 px-md-4">
+
+  <!-- Header Section -->
+  <header class="hub-header d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+      <div class="d-flex align-items-center gap-2 mb-1">
+        <a href="/admin/dashboard" class="btn-icon-action text-muted" title="Back to Dashboard">
+          <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <span class="badge-pill reputation-badge">
+          <i class="fa-solid fa-building-circle-check me-1"></i> Approvals
+        </span>
+      </div>
+      <h1 class="page-title">Institution Requests</h1>
+      <p class="subtitle mb-0">Review, approve, or reject student-submitted colleges and universities.</p>
+    </div>
+
+    <!-- Quick Back Link -->
+    <a href="/admin/institutions" class="btn-secondary-pill btn-sm">
+      <i class="fa-solid fa-building-columns me-1"></i> All Institutions
+    </a>
+  </header>
+
+  <!-- Main Table Card (Full Width) -->
+  <section class="form-card p-0 overflow-hidden w-100">
+    <div class="table-responsive w-100">
+      <table class="custom-table admin-table w-100">
+        <thead>
+          <tr>
+            <th style="width: 25%;">Institution Name</th>
+            <th style="width: 15%;">City</th>
+            <th style="width: 15%;">State</th>
+            <th style="width: 12%;">Status</th>
+            <th style="width: 20%;">Message / Notes</th>
+            <th class="text-end" style="width: 13%;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (!requests || requests.length === 0) { %>
+            <tr>
+              <td colspan="6" class="text-center py-5">
+                <div class="empty-state-card border-0 shadow-none my-0">
+                  <div class="empty-icon info mb-2">
+                    <i class="fa-solid fa-inbox"></i>
+                  </div>
+                  <h3>No pending requests</h3>
+                  <p class="mb-0">There are no institution requests waiting for review right now.</p>
+                </div>
+              </td>
+            </tr>
+          <% } else { %>
+            <% requests.forEach(request => { %>
+              <tr>
+
+                <!-- Institution Name -->
+                <td>
+                  <span class="fw-bold text-main d-block"><%= request.name %></span>
+                </td>
+
+                <!-- City -->
+                <td class="table-secondary-text">
+                  <%= request.city %>
+                </td>
+
+                <!-- State -->
+                <td class="table-secondary-text">
+                  <%= request.state %>
+                </td>
+
+                <!-- Status Pill -->
+                <td>
+                  <% if (request.status === "pending") { %>
+                    <span class="status-pill status-pending">
+                      <i class="fa-solid fa-clock me-1"></i> Pending
+                    </span>
+                  <% } else if (request.status === "approved") { %>
+                    <span class="status-pill status-approved">
+                      <i class="fa-solid fa-circle-check me-1"></i> Approved
+                    </span>
+                  <% } else { %>
+                    <span class="status-pill status-rejected">
+                      <i class="fa-solid fa-circle-xmark me-1"></i> Rejected
+                    </span>
+                  <% } %>
+                </td>
+
+                <!-- Message / Note -->
+                <td>
+                 <span class="table-secondary-text fst-italic">
+                    <%= request.message ? `"${request.message}"` : "-" %>
+                  </span>
+                </td>
+
+                <!-- Actions -->
+                <td class="text-end">
+                  <div class="admin-actions-group">
+
+                    <!-- Approve Button -->
+                    <% if (request.status === "pending") { %>
+                      <form
+                        action="/admin/institution-requests/<%= request._id %>/approve?_method=PATCH"
+                        method="POST"
+                        class="d-inline"
+                      >
+                        <button class="btn-icon-action text-success" title="Approve Request">
+                          <i class="fa-solid fa-check"></i>
+                        </button>
+                      </form>
+
+                      <!-- Reject Button -->
+                      <form
+                        action="/admin/institution-requests/<%= request._id %>/reject?_method=PATCH"
+                        method="POST"
+                        class="d-inline"
+                      >
+                        <button class="btn-icon-action text-warning" title="Reject Request">
+                          <i class="fa-solid fa-ban"></i>
+                        </button>
+                      </form>
+                    <% } %>
+
+                    <!-- Delete Button -->
+                    <form
+                      action="/admin/institution-requests/<%= request._id %>?_method=DELETE"
+                      method="POST"
+                      class="d-inline"
+                    >
+                      <button
+                        type="submit"
+                        class="btn-icon-action text-danger"
+                        onclick="return confirm('Permanently delete this institution request?')"
+                        title="Delete Request"
+                      >
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </form>
+
+                  </div>
+                </td>
+
+              </tr>
+            <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>

@@ -1,0 +1,84 @@
+<main class="hub-container viewer-container">
+
+  <!-- PDF Viewer Header Toolbar -->
+  <header class="viewer-header">
+    <div class="header-left">
+      <a href="/contributions/<%= contribution._id %>" class="btn-icon-back" title="Back to Note Details">
+        <i class="fa-solid fa-arrow-left"></i>
+      </a>
+      <div class="header-titles">
+        <div class="meta-row">
+          <span class="subject-pill"><%= contribution.subject %></span>
+          <% if (contribution.courseCode) { %>
+            <span class="code-pill"><%= contribution.courseCode %></span>
+          <% } %>
+        </div>
+        <h1 class="viewer-title"><%= contribution.title %></h1>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="header-actions">
+      <% if (contribution.files && contribution.files.length > 0) { %>
+        <a 
+          href="<%= contribution.files[0].url %>" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="btn-secondary-pill"
+        >
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          <span>Open Fullscreen</span>
+        </a>
+      <% } %>
+    </div>
+  </header>
+
+  <!-- PDF Viewer Frame Section -->
+  <section class="viewer-card">
+    <% if (contribution.files && contribution.files.length > 0) { %>
+      
+      <% contribution.files.forEach((file, index) => { %>
+        <div class="pdf-wrapper <%= index > 0 ? 'mt-4' : '' %>">
+          
+          <!-- Embedded PDF Viewer -->
+          <iframe
+src="<%= file.url %>#toolbar=0&navpanes=0&scrollbar=0"
+class="pdf-embed">
+</iframe>
+
+          <!-- Fallback Notice for Mobile / Non-Supported Browsers -->
+          <div class="pdf-fallback-notice">
+            <i class="fa-solid fa-file-pdf fallback-icon"></i>
+            <h3>Unable to display PDF preview inline?</h3>
+            <p>Your browser or device may not support direct PDF rendering.</p>
+            <a 
+              href="<%= file.url %>" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="btn-primary-glow"
+            >
+              <i class="fa-solid fa-download"></i> View / Download PDF
+            </a>
+          </div>
+
+        </div>
+      <% }) %>
+
+    <% } else { %>
+
+      <!-- Empty State -->
+      <div class="empty-state-card">
+        <div class="empty-icon warning">
+          <i class="fa-solid fa-file-circle-xmark"></i>
+        </div>
+        <h3>No Document Available</h3>
+        <p>There are no attached PDF files to preview for this contribution.</p>
+        <a href="/contributions/<%= contribution._id %>" class="btn-primary-pill">
+          <i class="fa-solid fa-arrow-left"></i> Return to Note
+        </a>
+      </div>
+
+    <% } %>
+  </section>
+
+</main>

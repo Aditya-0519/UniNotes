@@ -1,0 +1,224 @@
+<main class="hub-container form-container-sm">
+
+  <!-- Page Header -->
+  <header class="hub-header text-center">
+    <div class="title-group mx-auto">
+      <span class="badge-pill upload-badge">
+        <i class="fa-solid fa-cloud-arrow-up"></i> Share Knowledge
+      </span>
+      <h1 class="page-title">Upload Notes</h1>
+      <p class="subtitle">Contribute your study guides, lecture notes, or past papers to help your peers.</p>
+    </div>
+  </header>
+
+  <!-- Upload Form Card -->
+  <div class="form-card">
+    <form action="/contributions" method="POST" enctype="multipart/form-data">
+
+      <!-- Title Input -->
+      <div class="form-group mb-4">
+        <label class="custom-form-label">
+          Title <span class="required-star">*</span>
+        </label>
+        <div class="input-icon-wrapper">
+          <i class="fa-solid fa-heading input-icon"></i>
+          <input
+            type="text"
+            name="title"
+            class="form-control custom-input"
+            placeholder="e.g. DBMS Complete Unit 1 Notes"
+            required
+          >
+        </div>
+      </div>
+
+      <!-- Subject Input -->
+      <div class="form-group mb-4">
+        <label class="custom-form-label">
+          Subject <span class="required-star">*</span>
+        </label>
+        <div class="input-icon-wrapper">
+          <i class="fa-solid fa-book-open input-icon"></i>
+          <input
+            type="text"
+            name="subject"
+            class="form-control custom-input"
+            placeholder="e.g. Database Management Systems"
+            required
+          >
+        </div>
+      </div>
+
+      <!-- Semester & Branch Grid -->
+      <div class="row g-3 mb-4">
+        
+        <!-- Semester -->
+        <div class="col-md-6">
+          <label class="custom-form-label">
+            Semester <span class="required-star">*</span>
+          </label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-layer-group input-icon"></i>
+            <select name="semester" class="form-select custom-select" required>
+              <option value="">Choose Semester</option>
+              <% for(let i=1; i<=8; i++){ %>
+                <option value="<%= i %>">Semester <%= i %></option>
+              <% } %>
+            </select>
+          </div>
+        </div>
+
+        <!-- Branch -->
+        <div class="col-md-6">
+          <label class="custom-form-label">
+            Branch <span class="required-star">*</span>
+          </label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-graduation-cap input-icon"></i>
+            <select name="branch" class="form-select custom-select" required>
+              <option value="Common to All">Common to All</option>
+              <option>CSE</option>
+              <option>IT</option>
+              <option>ECE</option>
+              <option>EEE</option>
+              <option>Mechanical</option>
+              <option>Civil</option>
+              <option>Chemical</option>
+              <option>Biotechnology</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Course Code -->
+      <div class="form-group mb-4">
+        <label class="custom-form-label">Course Code</label>
+        <div class="input-icon-wrapper">
+          <i class="fa-solid fa-code input-icon"></i>
+          <input
+            type="text"
+            name="courseCode"
+            class="form-control custom-input"
+            placeholder="e.g. CS301"
+          >
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group mb-4">
+        <label class="custom-form-label">
+          Description <span class="required-star">*</span>
+        </label>
+        <textarea
+          name="description"
+          rows="4"
+          class="form-control custom-textarea"
+          placeholder="Mention syllabus, units covered, exam relevance..."
+          required
+        ></textarea>
+      </div>
+
+      <!-- File Dropzone Input -->
+      <div class="form-group mb-4">
+        <label class="custom-form-label">
+          Upload Files <span class="required-star">*</span>
+        </label>
+        <div class="file-dropzone">
+          <input
+            type="file"
+            name="files"
+            class="file-input-hidden"
+            id="fileInput"
+            multiple
+            required
+          >
+          <label for="fileInput" class="dropzone-label">
+            <div id="selectedFiles" class="selected-files"></div>
+            <div class="dropzone-icon">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+            <span class="dropzone-title">Click to upload or drag & drop</span>
+            <span class="dropzone-sub">PDFs, images, or document files supported</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Tags & Visibility Grid -->
+      <div class="row g-3 mb-4">
+
+        <!-- Tags -->
+        <div class="col-md-7">
+          <label class="custom-form-label">Tags</label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-tags input-icon"></i>
+            <input
+              type="text"
+              name="tags"
+              class="form-control custom-input"
+              placeholder="e.g. dbms, handwritten, pyq, notes"
+            >
+          </div>
+        </div>
+
+        <!-- Visibility -->
+        <div class="col-md-5">
+          <label class="custom-form-label">Visibility</label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-eye input-icon"></i>
+            <select name="visibility" class="form-select custom-select">
+              <option value="public">Public</option>
+              <option value="college_only">Only My College</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn-primary-glow btn-submit-full mt-2">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        <span>Publish Study Notes</span>
+      </button>
+
+    </form>
+  </div>
+
+</main>
+
+<script>
+const input = document.getElementById("fileInput");
+const output = document.getElementById("selectedFiles");
+
+input.addEventListener("change", () => {
+
+    if(input.files.length===0){
+        output.innerHTML="";
+        return;
+    }
+
+    let html=`<div class="file-count">
+                ✅ ${input.files.length} file${input.files.length>1?"s":""} selected
+              </div>`;
+
+    for(const file of input.files){
+
+        html += `
+            <div class="file-item">
+                <i class="fa-solid fa-file"></i>
+                ${file.name}
+            </div>
+        `;
+
+    }
+
+    output.innerHTML=html;
+
+});
+
+document.querySelector(".file-dropzone")
+.classList.add("has-files");
+
+document.querySelector(".file-dropzone")
+.classList.remove("has-files");
+</script>

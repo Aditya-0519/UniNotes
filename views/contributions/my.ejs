@@ -1,0 +1,91 @@
+<main class="hub-container">
+
+  <!-- Page Header -->
+  <header class="hub-header">
+    <div class="header-top">
+      <div class="title-group">
+        <span class="badge-pill my-notes-badge">
+          <i class="fa-solid fa-folder-user"></i> My Contributions
+        </span>
+        <h1 class="page-title">My Notes</h1>
+        <p class="subtitle">Manage, track, and view the status of all your uploaded study materials.</p>
+      </div>
+
+      <a href="/contributions/new" class="btn-primary-glow">
+        <i class="fa-solid fa-plus"></i>
+        <span>Upload New Note</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content Grid / Empty State -->
+  <section class="notes-section">
+    <% if (!contributions || contributions.length === 0) { %>
+
+      <!-- Empty State Card -->
+      <div class="empty-state-card">
+        <div class="empty-icon info">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+        </div>
+        <h3>You haven't uploaded any notes yet</h3>
+        <p>Share your study guides or lecture notes to help fellow students and earn points.</p>
+        <a href="/contributions/new" class="btn-primary-pill">
+          <i class="fa-solid fa-plus"></i> Upload Your First Note
+        </a>
+      </div>
+
+    <% } else { %>
+
+      <!-- Contributions Cards Grid -->
+      <div class="cards-grid">
+        <% contributions.forEach(note => { %>
+          <article class="note-card status-card">
+            <div class="card-body">
+
+              <!-- Meta Row: Subject & Status -->
+              <div class="card-meta-top d-flex justify-content-between align-items-center width-100">
+                <span class="subject-pill"><%= note.subject || 'General' %></span>
+
+                <!-- Dynamic Status Pill -->
+                <% if (note.status === "approved") { %>
+                  <span class="status-pill status-approved">
+                    <i class="fa-solid fa-circle-check"></i> Approved
+                  </span>
+                <% } else if (note.status === "pending") { %>
+                  <span class="status-pill status-pending">
+                    <i class="fa-solid fa-clock"></i> Pending
+                  </span>
+                <% } else { %>
+                  <span class="status-pill status-rejected">
+                    <i class="fa-solid fa-circle-xmark"></i> Rejected
+                  </span>
+                <% } %>
+              </div>
+
+              <!-- Title -->
+              <h2 class="card-title mt-2">
+                <a href="/contributions/<%= note._id %>"><%= note.title %></a>
+              </h2>
+
+            </div>
+
+            <!-- Card Footer -->
+            <div class="card-footer">
+              <span class="text-muted text-sm">
+                <i class="fa-regular fa-file-lines me-1"></i> Contribution
+              </span>
+
+              <a href="/contributions/<%= note._id %>" class="btn-card-action">
+                <span>Open</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+
+          </article>
+        <% }) %>
+      </div>
+
+    <% } %>
+  </section>
+
+</main>

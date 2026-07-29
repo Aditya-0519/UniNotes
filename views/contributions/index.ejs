@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Materials Hub</title>
+
+  <!-- Google Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <main class="hub-container">
+
+    <!-- Header & Hero Section -->
+    <header class="hub-header">
+      <div class="header-top">
+        <div class="title-group">
+          <span class="badge-pill">
+            <i class="fa-solid fa-sparkles"></i> Github for Students
+          </span>
+          <h1 class="page-title">Explore Study Resources</h1>
+          <p class="subtitle">Access peer-reviewed study guides, lecture summaries, and past papers.</p>
+        </div>
+
+        <a href="/contributions/new" class="btn-primary-glow">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span>Upload Notes</span>
+        </a>
+      </div>
+
+      <!-- Search Bar -->
+      <form action="/contributions" method="GET" class="search-form">
+        <div class="input-group">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input 
+              type="text" 
+              name="q" 
+              class="form-control" 
+              placeholder="Search notes by title, subject, course code..." 
+              value="<%= search %>"
+              autocomplete="off"
+            >
+          </div>
+          <button type="submit" class="btn-search">
+            <span>Search</span>
+          </button>
+        </div>
+      </form>
+    </header>
+
+    <!-- Main Content Area -->
+    <section class="notes-section">
+      <% if (!contributions || contributions.length === 0) { %>
+
+        <!-- Empty State Cards -->
+        <div class="empty-state-card">
+          <% if (search) { %>
+            <div class="empty-icon warning">
+              <i class="fa-solid fa-magnifying-glass-slash"></i>
+            </div>
+            <h3>No matching notes found</h3>
+            <p>We couldn't find anything matching "<strong><%= search %></strong>". Try checking for typos or searching a broader term.</p>
+            <a href="/" class="btn-secondary-pill">
+              <i class="fa-solid fa-xmark"></i> Clear Search Filter
+            </a>
+          <% } else { %>
+            <div class="empty-icon info">
+              <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <h3>No study materials available yet</h3>
+            <p>Be the pioneer of your campus! Share your notes and help build the community.</p>
+            <a href="/contributions/new" class="btn-primary-pill">
+              <i class="fa-solid fa-plus"></i> Be the First to Upload
+            </a>
+          <% } %>
+        </div>
+
+      <% } else { %>
+
+        <!-- Cards Grid -->
+        <div class="cards-grid">
+          <% contributions.forEach(contrib => { %>
+            <article class="note-card">
+              <div class="card-body">
+
+                <!-- Meta Top: Institution Badge -->
+                <div class="card-meta-top">
+                  <% if (contrib.institution) { %>
+                    <a href="/institutions/<%= contrib.institution._id %>" class="institution-badge">
+                      <i class="fa-solid fa-building-columns icon"></i>
+                      <span><%= contrib.institution.shortName || contrib.institution.name %></span>
+                      <% if (contrib.institution.isVerified) { %>
+                        <i class="fa-solid fa-circle-check verified-icon" title="Verified Institution"></i>
+                      <% } %>
+                    </a>
+                  <% } else { %>
+                    <span class="institution-badge generic">
+                      <i class="fa-solid fa-graduation-cap icon"></i> General Resource
+                    </span>
+                  <% } %>
+                </div>
+
+                <!-- Title -->
+                <h2 class="card-title">
+                  <a href="/contributions/<%= contrib._id %>"><%= contrib.title %></a>
+                </h2>
+
+                <!-- Subject Pill -->
+                <div class="subject-row">
+                  <span class="subject-pill"><%= contrib.subject || 'General' %></span>
+                </div>
+
+                <!-- Description -->
+                <p class="card-description">
+                  <%= contrib.description %>
+                </p>
+
+              </div>
+
+              <!-- Card Footer -->
+              <div class="card-footer">
+                <div class="author-info">
+                  <div class="author-avatar">
+                    <%= contrib.contributor?.fullName ? contrib.contributor.fullName.charAt(0).toUpperCase() : 'U' %>
+                  </div>
+                  <div class="author-details">
+                    <a href="/users/<%= contrib.contributor?._id %>" class="author-name">
+                      <%= contrib.contributor?.fullName || 'Anonymous' %>
+                    </a>
+                    <% if (contrib.contributor?.reputation) { %>
+                      <span class="author-reputation">
+                        <i class="fa-solid fa-star"></i> <%= contrib.contributor.reputation %> pts
+                      </span>
+                    <% } %>
+                  </div>
+                </div>
+
+                <a href="/contributions/<%= contrib._id %>" class="btn-card-action">
+                  <span>Read</span>
+                  <i class="fa-solid fa-arrow-right"></i>
+                </a>
+              </div>
+
+            </article>
+          <% }) %>
+        </div>
+
+      <% } %>
+    </section>
+
+  </main>
+
+</body>
+</html>

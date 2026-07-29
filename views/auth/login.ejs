@@ -1,0 +1,79 @@
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <div class="auth-header">
+
+            <div class="auth-logo">📚</div>
+
+            <h1>Welcome back</h1>
+
+            <p> Login to continue to UniNotes.</p>
+
+        </div>
+
+        <form action="/auth/login" method="POST">
+
+            <div class="mb-3">
+
+                <label class="form-label">Email</label>
+
+                <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="Enter your email"
+                    required>
+
+            </div>
+
+            <div class="mb-4">
+
+                <label class="form-label">Password</label>
+
+                <input
+                    type="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="Enter your password"
+                    required>
+
+            </div>
+
+            <button class="btn btn-primary-glow w-100">
+
+                Login
+
+            </button>
+
+        </form>
+
+        <div class="divider">
+
+            <span>OR</span>
+
+        </div>
+
+        <a href="/auth/google" class="btn-google">
+
+            <i class="fa-brands fa-google"></i>
+
+            Continue with Google
+
+        </a><br>
+
+        <p class="auth-footer">
+
+            Don't have an account?
+
+            <a href="/auth/register">
+
+                Create one
+
+            </a>
+
+        </p>
+
+    </div>
+
+</div>

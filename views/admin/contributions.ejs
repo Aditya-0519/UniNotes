@@ -1,0 +1,160 @@
+<main class="hub-container w-100 px-3 px-md-4">
+
+  <!-- Header Section -->
+  <header class="hub-header d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+      <h1 class="page-title">
+        <i class="fa-solid fa-list-check me-2"></i> Manage Contributions
+      </h1>
+      <p class="subtitle mb-0">Review, approve, or moderate student uploads across all institutions.</p>
+    </div>
+  </header>
+
+  <!-- Main Table Card (Full Width) -->
+  <section class="form-card p-0 overflow-hidden w-100">
+    <div class="table-responsive w-100">
+      <table class="custom-table admin-table w-100">
+        <thead>
+          <tr>
+            <th style="width: 32%;">Title</th>
+            <th style="width: 20%;">Contributor</th>
+            <th style="width: 23%;">Institution</th>
+            <th style="width: 12%;">Status</th>
+            <th class="text-end" style="width: 13%;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (!contributions || contributions.length === 0) { %>
+            <tr>
+              <td colspan="5" class="text-center py-5">
+                <div class="empty-state-card border-0 shadow-none my-0">
+                  <div class="empty-icon info mb-2">
+                    <i class="fa-solid fa-folder-open"></i>
+                  </div>
+                  <h3>No contributions found</h3>
+                  <p class="mb-0">There are no uploaded notes waiting for review right now.</p>
+                </div>
+              </td>
+            </tr>
+          <% } else { %>
+            <% contributions.forEach(contribution => { %>
+              <tr>
+
+                <!-- Note Title -->
+                <td>
+                  <a href="/contributions/<%= contribution._id %>" target="_blank" class="user-table-link fw-bold">
+                    <%= contribution.title %>
+                  </a>
+                </td>
+
+                <!-- Contributor -->
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-user-graduate opacity-50 text-xs"></i>
+                    <span>
+                      <%= contribution.contributor ? contribution.contributor.fullName : "Unknown User" %>
+                    </span>
+                  </div>
+                </td>
+
+                <!-- Institution (Robust Display Logic) -->
+                <td class="text-muted">
+                  <i class="fa-solid fa-building-columns me-1 opacity-50"></i>
+                  <% 
+                    let instName = "Unknown Institution";
+                    if (contribution.institution) {
+                      if (typeof contribution.institution === 'object') {
+                        instName = contribution.institution.shortName || contribution.institution.name || "Unknown Institution";
+                      } else if (typeof contribution.institution === 'string') {
+                        instName = contribution.institution;
+                      }
+                    }
+                  %>
+                  <span class="institution-text"><%= instName %></span>
+                </td>
+
+                <!-- Status Pill -->
+                <td>
+                  <% if (contribution.status === "approved") { %>
+                    <span class="status-pill status-approved">
+                      <i class="fa-solid fa-circle-check me-1"></i> Approved
+                    </span>
+                  <% } else if (contribution.status === "pending") { %>
+                    <span class="status-pill status-pending">
+                      <i class="fa-solid fa-clock me-1"></i> Pending
+                    </span>
+                  <% } else { %>
+                    <span class="status-pill status-rejected">
+                      <i class="fa-solid fa-circle-xmark me-1"></i> Rejected
+                    </span>
+                  <% } %>
+                </td>
+
+                <!-- Action Toolbar -->
+                <td class="text-end">
+                  <div class="admin-actions-group">
+
+                    <!-- View Button -->
+                    <a
+                      href="/contributions/<%= contribution._id %>"
+                      class="btn-icon-action text-primary"
+                      target="_blank"
+                      title="View Contribution"
+                    >
+                      <i class="fa-solid fa-eye"></i>
+                    </a>
+
+                    <!-- Approve Button -->
+                    <% if (contribution.status !== "approved") { %>
+                      <form
+                        action="/admin/contributions/<%= contribution._id %>/approve?_method=PATCH"
+                        method="POST"
+                        class="d-inline"
+                      >
+                        <button class="btn-icon-action text-success" title="Approve Note">
+                          <i class="fa-solid fa-check"></i>
+                        </button>
+                      </form>
+                    <% } %>
+
+                    <!-- Reject Button -->
+                    <% if (contribution.status !== "rejected") { %>
+                      <form
+                        action="/admin/contributions/<%= contribution._id %>/reject?_method=PATCH"
+                        method="POST"
+                        class="d-inline"
+                      >
+                        <button class="btn-icon-action text-warning" title="Reject Note">
+                          <i class="fa-solid fa-ban"></i>
+                        </button>
+                      </form>
+                    <% } %>
+
+                    <!-- Delete Button -->
+                    <form
+                      action="/admin/contributions/<%= contribution._id %>?_method=DELETE"
+                      method="POST"
+                      class="d-inline"
+                    >
+                      <button
+                        type="submit"
+                        class="btn-icon-action text-danger"
+                        onclick="return confirm('Permanently delete this contribution?')"
+                        title="Delete Note"
+                      >
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </form>
+
+                  </div>
+                </td>
+
+              </tr>
+            <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
