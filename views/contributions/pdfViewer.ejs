@@ -1,68 +1,144 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<main class="viewer-container">
 
-<meta charset="UTF-8">
+    <div class="viewer-toolbar">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <button id="prevPage">◀ Prev</button>
 
-<title><%= contribution.title %></title>
+        <span id="pageInfo">
+            Page <span id="pageNum">1</span> /
+            <span id="pageCount">0</span>
+        </span>
+
+        <button id="nextPage">Next ▶</button>
+
+        <button id="zoomOut">−</button>
+
+        <button id="zoomIn">+</button>
+
+    </div>
+
+    <canvas id="pdfCanvas"></canvas>
+
+</main>
 
 <style>
-
-html,body{
-    margin:0;
-    padding:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#111;
+.viewer-container{
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
 }
 
-.pdf-frame{
-    width:100%;
-    height:100vh;
-    border:none;
+.viewer-toolbar{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
 }
 
+.viewer-toolbar button{
+    padding:8px 15px;
+    cursor:pointer;
+}
+
+#pdfCanvas{
+    display:block;
+    margin:auto;
+    max-width:100%;
+    border-radius:10px;
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+}
 </style>
 
-</head>
+<script type="module">
 
-<body>
+import * as pdfjsLib from "/js/pdf.min.mjs";
 
-<iframe
-    class="pdf-frame"
-    src="<%= pdfUrl %>#toolbar=0&navpanes=0&scrollbar=0"
-></iframe>
+pdfjsLib.GlobalWorkerOptions.workerSrc="/js/pdf.worker.min.mjs";
 
-<script>
+const url="<%= pdfUrl %>";
+
+let pdfDoc=null;
+let pageNum=1;
+let scale=1.5;
+
+const canvas=document.getElementById("pdfCanvas");
+const ctx=canvas.getContext("2d");
+
+async function renderPage(num){
+
+    const page=await pdfDoc.getPage(num);
+
+    const viewport=page.getViewport({scale});
+
+    canvas.width=viewport.width;
+    canvas.height=viewport.height;
+
+    await page.render({
+        canvasContext:ctx,
+        viewport
+    }).promise;
+
+    document.getElementById("pageNum").textContent=num;
+}
+
+pdfjsLib.getDocument(url).promise.then(pdf=>{
+
+    pdfDoc=pdf;
+
+    document.getElementById("pageCount").textContent=pdf.numPages;
+
+    renderPage(pageNum);
+
+});
+
+document.getElementById("prevPage").onclick=()=>{
+
+    if(pageNum<=1) return;
+
+    pageNum--;
+
+    renderPage(pageNum);
+
+};
+
+document.getElementById("nextPage").onclick=()=>{
+
+    if(pageNum>=pdfDoc.numPages) return;
+
+    pageNum++;
+
+    renderPage(pageNum);
+
+};
+
+document.getElementById("zoomIn").onclick=()=>{
+
+    scale+=0.2;
+
+    renderPage(pageNum);
+
+};
+
+document.getElementById("zoomOut").onclick=()=>{
+
+    if(scale<=0.6) return;
+
+    scale-=0.2;
+
+    renderPage(pageNum);
+
+};
 
 document.addEventListener("contextmenu",e=>e.preventDefault());
 
-document.addEventListener("keydown",function(e){
+document.addEventListener("keydown",e=>{
 
-if(
-e.ctrlKey &&
-(
-e.key==="s"||
-e.key==="S"||
-e.key==="p"||
-e.key==="P"||
-e.key==="u"||
-e.key==="U"
-)
-){
-e.preventDefault();
-}
+    if(e.key==="F12") e.preventDefault();
 
-if(e.key==="F12"){
-e.preventDefault();
-}
+    if(e.ctrlKey && ["s","S","p","P","u","U"].includes(e.key))
+        e.preventDefault();
 
 });
 
 </script>
-
-</body>
-</html>
