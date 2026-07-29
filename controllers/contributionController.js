@@ -237,18 +237,14 @@ exports.viewPdf = catchAsync(async (req, res) => {
 
     const contribution = await Contribution.findById(req.params.id);
 
-    if (!contribution) {
-
-        req.flash("error", "Contribution not found.");
-
+    if (!contribution || contribution.files.length === 0) {
+        req.flash("error", "PDF not found.");
         return res.redirect("/contributions");
-
     }
 
-    res.render("contributions/viewPdf", {
-
-        contribution
-
+    res.render("contributions/pdfViewer", {
+        contribution,
+        pdfUrl: contribution.files[0].url
     });
 
 });
