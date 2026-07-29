@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title><%= contribution.title %></title>
+
+<style>
+
+html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#111;
+}
+
+.pdf-frame{
+    width:100%;
+    height:100vh;
+    border:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<iframe
+    class="pdf-frame"
+    src="<%= pdfUrl %>#toolbar=0&navpanes=0&scrollbar=0"
+></iframe>
+
+<script>
+
+document.addEventListener("contextmenu",e=>e.preventDefault());
+
+document.addEventListener("keydown",function(e){
+
+if(
+e.ctrlKey &&
+(
+e.key==="s"||
+e.key==="S"||
+e.key==="p"||
+e.key==="P"||
+e.key==="u"||
+e.key==="U"
+)
+){
+e.preventDefault();
+}
+
+if(e.key==="F12"){
+e.preventDefault();
+}
+
+});
+
+</script>
+
+</body>
+</html>

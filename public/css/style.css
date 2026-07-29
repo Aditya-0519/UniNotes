@@ -2193,3 +2193,10 @@ label{
     color:var(--text-main);
     font-weight:600;
 }
+
+.pdf-frame{
+    width:100%;
+    height:100vh;
+    border:none;
+    pointer-events:auto;
+}

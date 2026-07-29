@@ -95,6 +95,18 @@ app.use((err, req, res, next) => {
 
 });
 
+app.use(
+    "/pdfjs",
+    express.static(
+        path.join(
+            __dirname,
+            "node_modules",
+            "pdfjs-dist",
+            "build"
+        )
+    )
+);
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, "0.0.0.0", () => {

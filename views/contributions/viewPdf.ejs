@@ -21,7 +21,7 @@
     <div class="header-actions">
       <% if (contribution.files && contribution.files.length > 0) { %>
         <a 
-          href="<%= contribution.files[0].url.replace('/upload/', '/upload/fl_inline/') %>"
+          href="<%= contribution.files[0].url %>"
           target="_blank" 
           rel="noopener noreferrer" 
           class="btn-secondary-pill"
@@ -34,51 +34,83 @@
   </header>
 
   <!-- PDF Viewer Frame Section -->
-  <section class="viewer-card">
-    <% if (contribution.files && contribution.files.length > 0) { %>
-      
-      <% contribution.files.forEach((file, index) => { %>
-        <div class="pdf-wrapper <%= index > 0 ? 'mt-4' : '' %>">
-          
-          <!-- Embedded PDF Viewer -->
-          <iframe
-src="<%= file.url.replace('/upload/', '/upload/fl_inline/') %>#toolbar=0&navpanes=0&scrollbar=0"
-class="pdf-embed">
-</iframe>
+<section class="viewer-card">
 
-          <!-- Fallback Notice for Mobile / Non-Supported Browsers -->
-          <div class="pdf-fallback-notice">
-            <i class="fa-solid fa-file-pdf fallback-icon"></i>
-            <h3>Unable to display PDF preview inline?</h3>
-            <p>Your browser or device may not support direct PDF rendering.</p>
-            <a 
-              href="<%= file.url.replace('/upload/', '/upload/fl_inline/') %>"
-              target="_blank" 
-              rel="noopener noreferrer" 
-              class="btn-primary-glow"
-            >
-              <i class="fa-solid fa-download"></i> View / Download PDF
-            </a>
-          </div>
+<% if (contribution.files && contribution.files.length > 0) { %>
 
-        </div>
-      <% }) %>
+    <% contribution.files.forEach((file,index)=>{ %>
 
-    <% } else { %>
+    <div class="pdf-wrapper <%= index>0 ? 'mt-4' : '' %>">
 
-      <!-- Empty State -->
-      <div class="empty-state-card">
-        <div class="empty-icon warning">
-          <i class="fa-solid fa-file-circle-xmark"></i>
-        </div>
-        <h3>No Document Available</h3>
-        <p>There are no attached PDF files to preview for this contribution.</p>
-        <a href="/contributions/<%= contribution._id %>" class="btn-primary-pill">
-          <i class="fa-solid fa-arrow-left"></i> Return to Note
-        </a>
-      </div>
+        <object
+            data="<%= file.url %>#toolbar=0&navpanes=0&scrollbar=0"
+            type="application/pdf"
+            class="pdf-embed">
 
-    <% } %>
-  </section>
+            <iframe
+                src="<%= file.url %>#toolbar=0&navpanes=0&scrollbar=0"
+                class="pdf-embed">
+            </iframe>
+
+            <div class="pdf-fallback-notice" style="display:block;">
+                <i class="fa-solid fa-file-pdf fallback-icon"></i>
+
+                <h3>
+                    PDF Preview isn't available.
+                </h3>
+
+                <p>
+                    Your browser doesn't support inline PDF viewing.
+                </p>
+
+                <a
+    href="<%= file.url %>"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="btn-primary-glow">
+
+                    <i class="fa-solid fa-up-right-from-square"></i>
+
+                    Open PDF
+
+                </a>
+
+            </div>
+
+        </object>
+
+    </div>
+
+    <% }) %>
+
+<% } else { %>
+
+<div class="empty-state-card">
+
+<div class="empty-icon warning">
+<i class="fa-solid fa-file-circle-xmark"></i>
+</div>
+
+<h3>No Document Available</h3>
+
+<p>
+There are no attached PDF files.
+</p>
+
+<a
+href="/contributions/<%= contribution._id %>"
+class="btn-primary-pill">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+Return to Note
+
+</a>
+
+</div>
+
+<% } %>
+
+</section>
 
 </main>

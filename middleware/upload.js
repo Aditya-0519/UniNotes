@@ -14,7 +14,7 @@ const storage = new CloudinaryStorage({
     folder: "college_notes",
     resource_type: "raw",
     public_id: `${Date.now()}-${file.originalname.replace(/\.[^/.]+$/, "")}`
-})
+  })
 });
 
 const upload = multer({
