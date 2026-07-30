@@ -54,16 +54,38 @@
 
 import * as pdfjsLib from "/js/pdf.min.mjs";
 
-pdfjsLib.GlobalWorkerOptions.workerSrc="/js/pdf.worker.min.mjs";
+pdfjsLib.GlobalWorkerOptions.workerSrc = "/js/pdf.worker.min.mjs";
 
-const url = "<%= pdfUrl %>";
+let pdfDoc = null;
+let pageNum = 1;
+let scale = 1.5;
 
-console.log("PDF URL:", url);
+const canvas = document.getElementById("pdfCanvas");
+const ctx = canvas.getContext("2d");
 
-pdfjsLib.getDocument(url).promise
+async function renderPage(num){
+
+    const page = await pdfDoc.getPage(num);
+
+    const viewport = page.getViewport({ scale });
+
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    await page.render({
+        canvasContext: ctx,
+        viewport: viewport
+    }).promise;
+
+    document.getElementById("pageNum").textContent = num;
+}
+
+const loadingTask = pdfjsLib.getDocument({
+    url: "<%= pdfUrl %>"
+});
+
+loadingTask.promise
 .then(pdf => {
-
-    console.log("PDF Loaded!", pdf);
 
     pdfDoc = pdf;
 
@@ -74,49 +96,15 @@ pdfjsLib.getDocument(url).promise
 })
 .catch(err => {
 
-    console.error("PDF ERROR:", err);
+    console.error(err);
 
     alert(err.message);
 
 });
 
-let pdfDoc=null;
-let pageNum=1;
-let scale=1.5;
+document.getElementById("prevPage").onclick = () => {
 
-const canvas=document.getElementById("pdfCanvas");
-const ctx=canvas.getContext("2d");
-
-async function renderPage(num){
-
-    const page=await pdfDoc.getPage(num);
-
-    const viewport=page.getViewport({scale});
-
-    canvas.width=viewport.width;
-    canvas.height=viewport.height;
-
-    await page.render({
-        canvasContext:ctx,
-        viewport
-    }).promise;
-
-    document.getElementById("pageNum").textContent=num;
-}
-
-pdfjsLib.getDocument(url).promise.then(pdf=>{
-
-    pdfDoc=pdf;
-
-    document.getElementById("pageCount").textContent=pdf.numPages;
-
-    renderPage(pageNum);
-
-});
-
-document.getElementById("prevPage").onclick=()=>{
-
-    if(pageNum<=1) return;
+    if(pageNum <= 1) return;
 
     pageNum--;
 
@@ -124,9 +112,9 @@ document.getElementById("prevPage").onclick=()=>{
 
 };
 
-document.getElementById("nextPage").onclick=()=>{
+document.getElementById("nextPage").onclick = () => {
 
-    if(pageNum>=pdfDoc.numPages) return;
+    if(pageNum >= pdfDoc.numPages) return;
 
     pageNum++;
 
@@ -134,19 +122,19 @@ document.getElementById("nextPage").onclick=()=>{
 
 };
 
-document.getElementById("zoomIn").onclick=()=>{
+document.getElementById("zoomIn").onclick = () => {
 
-    scale+=0.2;
+    scale += 0.2;
 
     renderPage(pageNum);
 
 };
 
-document.getElementById("zoomOut").onclick=()=>{
+document.getElementById("zoomOut").onclick = () => {
 
-    if(scale<=0.6) return;
+    if(scale <= 0.6) return;
 
-    scale-=0.2;
+    scale -= 0.2;
 
     renderPage(pageNum);
 

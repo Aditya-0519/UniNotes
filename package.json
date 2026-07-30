@@ -27,6 +27,6 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
-    "pdfjs-dist": "^6.2.108"
+    "pdfjs-dist": "4.10.38"
   }
 }
