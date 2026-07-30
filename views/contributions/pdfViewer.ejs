@@ -56,7 +56,29 @@ import * as pdfjsLib from "/js/pdf.min.mjs";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc="/js/pdf.worker.min.mjs";
 
-const url="<%= pdfUrl %>";
+const url = "<%= pdfUrl %>";
+
+console.log("PDF URL:", url);
+
+pdfjsLib.getDocument(url).promise
+.then(pdf => {
+
+    console.log("PDF Loaded!", pdf);
+
+    pdfDoc = pdf;
+
+    document.getElementById("pageCount").textContent = pdf.numPages;
+
+    renderPage(pageNum);
+
+})
+.catch(err => {
+
+    console.error("PDF ERROR:", err);
+
+    alert(err.message);
+
+});
 
 let pdfDoc=null;
 let pageNum=1;
@@ -129,16 +151,5 @@ document.getElementById("zoomOut").onclick=()=>{
     renderPage(pageNum);
 
 };
-
-document.addEventListener("contextmenu",e=>e.preventDefault());
-
-document.addEventListener("keydown",e=>{
-
-    if(e.key==="F12") e.preventDefault();
-
-    if(e.ctrlKey && ["s","S","p","P","u","U"].includes(e.key))
-        e.preventDefault();
-
-});
 
 </script>
