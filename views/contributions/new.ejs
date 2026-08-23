@@ -80,7 +80,7 @@
               <option>CSE</option>
               <option>IT</option>
               <option>ECE</option>
-              <option>EEE</option>
+              <option>EE</option>
               <option>Mechanical</option>
               <option>Civil</option>
               <option>Chemical</option>
@@ -122,24 +122,26 @@
       <!-- File Dropzone Input -->
       <div class="form-group mb-4">
         <label class="custom-form-label">
-          Upload Files <span class="required-star">*</span>
+          Upload PDF <span class="required-star">*</span>
         </label>
         <div class="file-dropzone">
           <input
-            type="file"
-            name="files"
-            class="file-input-hidden"
-            id="fileInput"
-            multiple
-            required
-          >
+    type="file"
+    name="file"
+    class="file-input-hidden"
+    id="fileInput"
+    accept="application/pdf"
+    required
+>
           <label for="fileInput" class="dropzone-label">
             <div id="selectedFiles" class="selected-files"></div>
             <div class="dropzone-icon">
               <i class="fa-solid fa-cloud-arrow-up"></i>
             </div>
             <span class="dropzone-title">Click to upload or drag & drop</span>
-            <span class="dropzone-sub">PDFs, images, or document files supported</span>
+            <span class="dropzone-sub">
+    Upload one PDF file (maximum 10 MB)
+</span>
           </label>
         </div>
       </div>
@@ -187,38 +189,26 @@
 </main>
 
 <script>
-const input = document.getElementById("fileInput");
-const output = document.getElementById("selectedFiles");
+    const input = document.getElementById("fileInput");
+    const output = document.getElementById("selectedFiles");
+    const dropzone = document.querySelector(".file-dropzone");
 
-input.addEventListener("change", () => {
+    input.addEventListener("change", () => {
+        if (!input.files.length) {
+            output.innerHTML = "";
+            dropzone.classList.remove("has-files");
+            return;
+        }
 
-    if(input.files.length===0){
-        output.innerHTML="";
-        return;
-    }
+        const file = input.files[0];
 
-    let html=`<div class="file-count">
-                ✅ ${input.files.length} file${input.files.length>1?"s":""} selected
-              </div>`;
-
-    for(const file of input.files){
-
-        html += `
+        output.innerHTML = `
             <div class="file-item">
-                <i class="fa-solid fa-file"></i>
+                <i class="fa-solid fa-file-pdf"></i>
                 ${file.name}
             </div>
         `;
 
-    }
-
-    output.innerHTML=html;
-
-});
-
-document.querySelector(".file-dropzone")
-.classList.add("has-files");
-
-document.querySelector(".file-dropzone")
-.classList.remove("has-files");
+        dropzone.classList.add("has-files");
+    });
 </script>

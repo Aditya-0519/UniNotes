@@ -3,13 +3,18 @@ const router = express.Router();
 const isLoggedIn = require('../middleware/isLoggedIn');
 const contributionController = require('../controllers/contributionController');
 const { upload } = require('../middleware/upload');
-const Contribution = require("../models/contribution");
+
 
 
 
 router.get('/', contributionController.index);
 router.get('/new', isLoggedIn, contributionController.newForm);
-router.post('/', isLoggedIn, upload.array('files', 5), contributionController.create);
+router.post(
+    '/',
+    isLoggedIn,
+    upload.single('file'),
+    contributionController.create
+);
 router.get('/my', isLoggedIn, contributionController.myContributions);
 router.get(
     "/bookmarks",

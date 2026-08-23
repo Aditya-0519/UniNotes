@@ -39,23 +39,29 @@ const userSchema = new mongoose.Schema(
     },
 
     institution: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Institution",
-        required: true
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Institution",
+    required: function () {
+        return this.role === "student";
+    }
+},
 
-    branch: {
-        type: String,
-        required: true,
-        trim: true
-    },
+branch: {
+    type: String,
+    trim: true,
+    required: function () {
+        return this.role === "student";
+    }
+},
 
-    semester: {
-        type: Number,
-        min: 1,
-        max: 10,
-        required: true
-    },
+semester: {
+    type: Number,
+    min: 1,
+    max: 10,
+    required: function () {
+        return this.role === "student";
+    }
+},
 
     contributionCount: {
         type: Number,

@@ -79,12 +79,17 @@ exports.create = catchAsync(async (req, res) => {
         visibility
     } = req.body;
 
-    const files = req.files.map(file => ({
-        url: file.path,
-        fileName: file.originalname,
-        fileType: file.mimetype.split("/")[1] || "pdf",
-        size: file.size
-    }));
+    if (!req.file) {
+        req.flash("error", "Please upload a PDF file.");
+        return res.redirect("/contributions/new");
+    }
+
+    const file = {
+        url: req.file.path,
+        fileName: req.file.originalname,
+        fileType: req.file.mimetype.split("/")[1] || "pdf",
+        size: req.file.size
+    };
 
     await Contribution.create({
 
@@ -98,16 +103,18 @@ exports.create = catchAsync(async (req, res) => {
         semester,
         courseCode,
 
-        files,
+        files: [file],
 
         tags: tags
-            ? tags.split(",").map(tag => tag.trim().toLowerCase())
+            ? tags
+                .split(",")
+                .map(tag => tag.trim().toLowerCase())
+                .filter(Boolean)
             : [],
 
         visibility: visibility || "public",
 
         status: "pending"
-
     });
 
     await User.findByIdAndUpdate(req.user._id, {
@@ -117,14 +124,13 @@ exports.create = catchAsync(async (req, res) => {
     });
 
     req.flash(
-    "success",
-    "Notes uploaded successfully. It is now waiting for admin approval."
-);
+        "success",
+        "Notes uploaded successfully. It is now waiting for admin approval."
+    );
 
     res.redirect("/contributions/my");
 
 });
-
 
 
 // ===============================
