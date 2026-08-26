@@ -86,6 +86,10 @@ app.use("/users", require("./routes/users"));
 app.use("/institutions", require("./routes/institutions"));
 app.use("/institutionRequests", require("./routes/institutionRequests"));
 app.use("/admin", require("./routes/admin"));
+app.use(
+    "/notifications",
+    require("./routes/notifications")
+);
 
 
 // Home Route

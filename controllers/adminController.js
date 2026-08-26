@@ -4,6 +4,8 @@ const catchAsync = require("../utils/catchAsync");
 const Contribution = require("../models/contribution");
 const InstitutionRequest = require("../models/institutionRequest");
 const reputation = require("../utils/reputation");
+const notificationService =
+    require("../services/notificationService");
 
 exports.dashboard = catchAsync(async (req, res) => {
 
@@ -125,15 +127,23 @@ exports.deleteContribution = catchAsync(async (req, res) => {
 
 exports.approveContribution = catchAsync(async (req, res) => {
 
-    const contribution = await Contribution.findById(req.params.id);
+    const contribution =
+        await Contribution.findById(req.params.id);
+
 
     if (!contribution) {
 
-        req.flash("error", "Contribution not found.");
+        req.flash(
+            "error",
+            "Contribution not found."
+        );
 
-        return res.redirect("/admin/contributions");
+        return res.redirect(
+            "/admin/contributions"
+        );
 
     }
+
 
     if (contribution.status !== "approved") {
 
@@ -141,16 +151,47 @@ exports.approveContribution = catchAsync(async (req, res) => {
 
         await contribution.save();
 
+
         await reputation.addReputation(
             contribution.contributor,
             20
         );
 
+
+        try {
+
+            const result =
+                await notificationService
+                    .notifyMatchingStudents(
+                        contribution
+                    );
+
+
+            console.log(
+                `🔔 Contribution notification result: ${result.sentCount} notifications sent to ${result.matchedUsers} matching students.`
+            );
+
+        } catch (error) {
+
+            // Notification failure should NOT undo approval
+            console.error(
+                "❌ Contribution notification error:",
+                error
+            );
+
+        }
+
     }
 
-    req.flash("success", "Contribution approved.");
 
-    res.redirect("/admin/contributions");
+    req.flash(
+        "success",
+        "Contribution approved."
+    );
+
+    res.redirect(
+        "/admin/contributions"
+    );
 
 });
 
