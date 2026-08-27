@@ -22,29 +22,23 @@ self.addEventListener("push", (event) => {
         data.title || "UniNotes";
 
 
-    const options = {
+const options = {
 
-        body:
-            data.body ||
-            "You have a new notification.",
+    body:
+        data.body ||
+        "You have a new notification.",
 
-        icon:
-            data.icon ||
-            "/images/logo.png",
+    icon: "/images/icon-192.png",
+   
+    data: {
 
-        badge:
-            data.badge ||
-            "/images/logo.png",
+        url:
+            data.url ||
+            "/"
 
-        data: {
+    }
 
-            url:
-                data.url ||
-                "/"
-
-        }
-
-    };
+};
 
 
     event.waitUntil(

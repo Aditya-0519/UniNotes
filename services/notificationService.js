@@ -132,18 +132,18 @@ exports.notifyMatchingStudents = async (contribution) => {
     // 📢 NOTIFICATION CONTENT
     // ==========================================
 
-    const payload = JSON.stringify({
+   const payload = JSON.stringify({
 
-        title:
-            `📚 ${contribution.title}`,
+    title:
+        contribution.title,
 
-        body:
-            `New ${contribution.subject} material is available for Semester ${contribution.semester}.`,
+    body:
+        `New ${contribution.subject} material is available for Semester ${contribution.semester}.`,
 
-        url:
-            `/contributions/${contribution._id}`
+    url:
+        `/contributions/${contribution._id}`
 
-    });
+});
 
 
     let sentCount = 0;
