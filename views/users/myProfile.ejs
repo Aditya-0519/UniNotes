@@ -3,9 +3,60 @@
   <!-- Profile Header Card -->
   <section class="profile-card mb-4">
     <div class="profile-header-top">
-      <div class="profile-avatar">
-        <i class="fa-solid fa-user-graduate"></i>
-      </div>
+<div class="profile-avatar-wrapper">
+
+ <div 
+  class="profile-avatar <%= user.avatar ? 'has-avatar' : '' %>" 
+  <% if (user.avatar) { %> 
+    onclick="openAvatarModal()" 
+    onkeydown="if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openAvatarModal(); }"
+    role="button" 
+    tabindex="0" 
+    title="View profile picture" 
+  <% } %>
+>
+
+    <% if (user.avatar) { %>
+
+      <img
+        src="<%= user.avatar %>"
+        alt="<%= user.fullName %>"
+        class="profile-avatar-image"
+      >
+
+    <% } else { %>
+
+      <i class="fa-solid fa-user-graduate"></i>
+
+    <% } %>
+
+  </div>
+
+  <form
+    action="/users/profile/avatar"
+    method="POST"
+    enctype="multipart/form-data"
+    class="avatar-upload-form"
+  >
+    <label
+      for="avatar"
+      class="avatar-upload-btn"
+      title="Change profile picture"
+    >
+      <i class="fa-solid fa-camera"></i>
+    </label>
+
+    <input
+      type="file"
+      id="avatar"
+      name="avatar"
+      accept="image/jpeg,image/png,image/webp"
+      hidden
+      onchange="this.form.submit()"
+    >
+  </form>
+
+</div>
       <div class="profile-info">
         <div class="d-flex align-items-center gap-2 flex-wrap">
           <h1 class="profile-name"><%= user.fullName %></h1>
@@ -132,3 +183,78 @@
   </section>
 
 </main>
+
+<% if (user.avatar) { %>
+
+  <div
+    id="avatarModal"
+    class="avatar-modal"
+    onclick="closeAvatarModal(event)"
+  >
+
+    <button
+      type="button"
+      class="avatar-modal-close"
+      onclick="closeAvatarModal()"
+      aria-label="Close"
+    >
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <img
+      src="<%= user.avatar %>"
+      alt="<%= user.fullName %>"
+      class="avatar-modal-image"
+    >
+
+  </div>
+
+<% } %>
+
+<script>
+
+function openAvatarModal() {
+
+    const modal = document.getElementById("avatarModal");
+
+    if (!modal) return;
+
+    modal.classList.add("show");
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+function closeAvatarModal(event) {
+
+    // If clicking the image itself, don't close
+    if (
+        event &&
+        event.target &&
+        event.target.classList.contains("avatar-modal-image")
+    ) {
+        return;
+    }
+
+    const modal = document.getElementById("avatarModal");
+
+    if (!modal) return;
+
+    modal.classList.remove("show");
+
+    document.body.style.overflow = "";
+
+}
+
+
+// Close with Escape key
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "Escape") {
+        closeAvatarModal();
+    }
+
+});
+
+</script>

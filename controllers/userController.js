@@ -4,6 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const mongoose = require("mongoose");
 const reputation = require("../utils/reputation");
 const badges = require("../utils/badges");
+const { cloudinary } = require("../middleware/upload");
 
 exports.myProfile = catchAsync(async (req, res) => {
 
@@ -90,5 +91,69 @@ exports.leaderboard = catchAsync(async (req, res) => {
         users,
         badges
     });
+
+});
+
+exports.updateAvatar = catchAsync(async (req, res) => {
+
+    if (!req.file) {
+        req.flash("error", "Please select an image.");
+        return res.redirect("/users/profile");
+    }
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+        req.flash("error", "User not found.");
+        return res.redirect("/users/profile");
+    }
+
+    // Delete previous avatar from Cloudinary
+    if (user.avatar) {
+
+        try {
+
+            const urlParts = user.avatar.split("/");
+
+            const uploadIndex = urlParts.indexOf("upload");
+
+            if (uploadIndex !== -1) {
+
+                let publicIdParts = urlParts.slice(uploadIndex + 1);
+
+                // Remove transformation/version folders
+                if (publicIdParts[0]?.startsWith("v")) {
+                    publicIdParts.shift();
+                }
+
+                const publicId = publicIdParts
+                    .join("/")
+                    .replace(/\.[^/.]+$/, "");
+
+                await cloudinary.uploader.destroy(publicId);
+
+            }
+
+        } catch (err) {
+
+            console.error(
+                "Failed to delete old avatar:",
+                err.message
+            );
+
+        }
+
+    }
+
+    user.avatar = req.file.path;
+
+    await user.save();
+
+    req.flash(
+        "success",
+        "Profile picture updated successfully."
+    );
+
+    res.redirect("/users/profile");
 
 });
