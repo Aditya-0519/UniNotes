@@ -2711,3 +2711,40 @@ body.share-modal-open {
     }
 
 }
+
+/* ================================
+   Share button - action bar fix
+   ================================ */
+
+.btn-action.share-note-btn {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.btn-action.share-note-btn i {
+    flex-shrink: 0;
+}
+
+.btn-action.share-note-btn span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.note-actions,
+.action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 576px) {
+    .btn-action.share-note-btn {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
