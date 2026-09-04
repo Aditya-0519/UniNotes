@@ -3139,3 +3139,124 @@ body.share-modal-open {
         font-size: 14px;
     }
 }
+
+/* =========================================
+   Profile Bio
+========================================= */
+
+.profile-bio {
+    margin: 0.75rem 0 0;
+    max-width: 700px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.bio-edit-form {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+}
+
+.bio-edit-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.bio-edit-header label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-main);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.bio-edit-header label i {
+    color: var(--primary);
+}
+
+#bioCounter {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+.bio-edit-form textarea {
+    width: 100%;
+    min-height: 85px;
+    resize: vertical;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    outline: none;
+    transition: var(--transition);
+    box-sizing: border-box;
+}
+
+.bio-edit-form textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.bio-edit-form textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.bio-edit-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.75rem;
+}
+
+.bio-edit-footer small {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+.bio-edit-footer small i {
+    margin-right: 0.25rem;
+}
+
+@media (max-width: 576px) {
+
+    .profile-bio {
+        font-size: 0.85rem;
+    }
+
+    .bio-edit-form {
+        padding: 0.85rem;
+    }
+
+    .bio-edit-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .bio-edit-footer .btn-primary-pill {
+        width: 100%;
+        justify-content: center;
+    }
+
+}
+
+.profile-bio {
+    margin: 0 0 6px 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-main);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}

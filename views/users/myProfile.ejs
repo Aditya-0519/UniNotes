@@ -73,6 +73,89 @@
             Unknown Institution
           <% } %>
         </p>
+
+        <% if (user.bio) { %>
+
+  <p class="profile-bio"><%= user.bio %></p>
+
+<% } %>
+
+<% if (isOwnProfile) { %>
+
+  <div class="bio-edit-section">
+
+    <% if (user.bio) { %>
+      <button
+        type="button"
+        class="btn-secondary-pill btn-sm"
+        onclick="toggleBioEditor()"
+        id="editBioBtn"
+      >
+        <i class="fa-solid fa-pen"></i>
+        Edit Bio
+      </button>
+    <% } else { %>
+      <button
+        type="button"
+        class="btn-secondary-pill btn-sm"
+        onclick="toggleBioEditor()"
+        id="editBioBtn"
+      >
+        <i class="fa-solid fa-plus"></i>
+        Add Bio
+      </button>
+    <% } %>
+
+    <form
+      action="/users/profile/bio"
+      method="POST"
+      class="bio-edit-form"
+      id="bioEditForm"
+      style="display: none;"
+    >
+
+      <div class="bio-edit-header">
+        <label for="bio">
+          <i class="fa-solid fa-pen"></i>
+          About you
+        </label>
+
+        <span id="bioCounter">
+          <%= (user.bio || "").length %>/200
+        </span>
+      </div>
+
+      <textarea
+        id="bio"
+        name="bio"
+        maxlength="200"
+        rows="3"
+        placeholder="Tell other students a little about yourself..."
+      ><%= user.bio || "" %></textarea>
+
+      <div class="bio-edit-footer">
+
+        <small>
+          <i class="fa-solid fa-circle-info"></i>
+          Maximum 200 characters
+        </small>
+
+        <button
+          type="submit"
+          class="btn-primary-pill btn-sm"
+        >
+          <i class="fa-solid fa-check"></i>
+          Save Bio
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+<% } %>
+
       </div>
     </div>
 
@@ -257,4 +340,41 @@ document.addEventListener("keydown", function(event) {
 
 });
 
+
+const bioInput = document.getElementById("bio");
+const bioCounter = document.getElementById("bioCounter");
+
+if (bioInput && bioCounter) {
+
+    bioInput.addEventListener("input", function () {
+
+        bioCounter.textContent =
+            `${this.value.length}/200`;
+
+    });
+
+}
+
+function toggleBioEditor() {
+
+    const form = document.getElementById("bioEditForm");
+    const button = document.getElementById("editBioBtn");
+
+    if (!form || !button) return;
+
+    if (form.style.display === "none") {
+
+        form.style.display = "block";
+
+        button.innerHTML =
+            '<i class="fa-solid fa-xmark"></i> Cancel';
+
+    } else {
+
+        form.style.display = "none";
+
+        button.innerHTML =
+            '<i class="fa-solid fa-pen"></i> Edit Bio';
+    }
+}
 </script>

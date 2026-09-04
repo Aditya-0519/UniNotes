@@ -23,6 +23,12 @@ router.post(
     userController.updateAvatar
 );
 
+router.post(
+    "/profile/bio",
+    isLoggedIn,
+    userController.updateBio
+);
+
 
 router.get(
     "/leaderboard",

@@ -35,7 +35,8 @@ exports.myProfile = catchAsync(async (req, res) => {
     user,
     contributions,
     totalViews,
-    badge: reputation.getBadge(user.reputation)
+    badge: reputation.getBadge(user.reputation),
+    isOwnProfile: true
 });
 
 });
@@ -64,11 +65,14 @@ exports.profile = catchAsync(async (req, res) => {
     0
 );
 
-       res.render("users/myProfile", {
+      res.render("users/myProfile", {
     user,
     contributions: notes,
     totalViews,
-    badge: badges.getBadge(user.reputation)
+    badge: badges.getBadge(user.reputation),
+    isOwnProfile: req.user
+        ? req.user._id.toString() === user._id.toString()
+        : false
 });
 
     } catch (err) {
@@ -152,6 +156,37 @@ exports.updateAvatar = catchAsync(async (req, res) => {
     req.flash(
         "success",
         "Profile picture updated successfully."
+    );
+
+    res.redirect("/users/profile");
+
+});
+
+exports.updateBio = catchAsync(async (req, res) => {
+
+    const bio = (req.body.bio || "").trim();
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+        req.flash("error", "User not found.");
+        return res.redirect("/users/profile");
+    }
+
+    // Nothing changed
+    if (bio === (user.bio || "").trim()) {
+        return res.redirect("/users/profile");
+    }
+
+    user.bio = bio;
+
+    await user.save();
+
+    req.flash(
+        "success",
+        bio
+            ? "Bio updated successfully."
+            : "Bio removed successfully."
     );
 
     res.redirect("/users/profile");
