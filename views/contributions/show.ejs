@@ -40,35 +40,50 @@
           <p class="description-text"><%= contribution.description %></p>
         </section>
 
-        <!-- Action Bar: Bookmark & Like Buttons -->
-        <div class="detail-actions-bar">
-          
-          <!-- Bookmark Action -->
-          <form action="/contributions/<%= contribution._id %>/bookmark" method="POST" class="d-inline">
-            <% if (isBookmarked) { %>
-              <button type="submit" class="btn-action active-bookmark">
-                <i class="fa-solid fa-bookmark"></i>
-                <span>Bookmarked</span>
-              </button>
-            <% } else { %>
-              <button type="submit" class="btn-action">
-                <i class="fa-regular fa-bookmark"></i>
-                <span>Bookmark</span>
-              </button>
-            <% } %>
-          </form>
+        <!-- Action Bar: Bookmark, Like & Share -->
+<div class="detail-actions-bar">
 
-          <!-- Like Action -->
-          <form action="/contributions/<%= contribution._id %>/like" method="POST" class="d-inline">
-            <% const isLiked = currentUser && contribution.likes.some(id => id.equals(currentUser._id)); %>
-            <button type="submit" class="btn-action <%= isLiked ? 'active-like' : '' %>">
-              <i class="<%= isLiked ? 'fa-solid fa-heart' : 'fa-regular fa-heart' %>"></i>
-              <span><%= isLiked ? 'Liked' : 'Like' %></span>
-              <span class="count-badge"><%= contribution.likes.length %></span>
-            </button>
-          </form>
+  <!-- Bookmark Action -->
+  <form action="/contributions/<%= contribution._id %>/bookmark" method="POST" class="d-inline">
+    <% if (isBookmarked) { %>
+      <button type="submit" class="btn-action active-bookmark">
+        <i class="fa-solid fa-bookmark"></i>
+        <span>Bookmarked</span>
+      </button>
+    <% } else { %>
+      <button type="submit" class="btn-action">
+        <i class="fa-regular fa-bookmark"></i>
+        <span>Bookmark</span>
+      </button>
+    <% } %>
+  </form>
 
-        </div>
+
+  <!-- Like Action -->
+  <form action="/contributions/<%= contribution._id %>/like" method="POST" class="d-inline">
+    <% const isLiked = currentUser && contribution.likes.some(id => id.equals(currentUser._id)); %>
+
+    <button type="submit" class="btn-action <%= isLiked ? 'active-like' : '' %>">
+      <i class="<%= isLiked ? 'fa-solid fa-heart' : 'fa-regular fa-heart' %>"></i>
+      <span><%= isLiked ? 'Liked' : 'Like' %></span>
+      <span class="count-badge"><%= contribution.likes.length %></span>
+    </button>
+  </form>
+
+
+  <!-- Share Action -->
+<button
+  type="button"
+  class="btn-action share-note-btn"
+  id="shareNoteBtn"
+  data-note-title="<%= contribution.title %>"
+  data-note-description="<%= contribution.description || '' %>"
+>
+  <i class="fa-solid fa-share-nodes"></i>
+  <span>Share</span>
+</button>
+
+</div>
 
       </article>
 
@@ -287,3 +302,206 @@
   </section>
 
 </main>
+
+<!-- =========================================================
+     Share Note Modal
+     ========================================================= -->
+
+<div
+  class="share-modal"
+  id="shareModal"
+  aria-hidden="true"
+>
+
+  <div class="share-modal-overlay" id="shareModalOverlay"></div>
+
+  <div
+    class="share-modal-content"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="shareModalTitle"
+  >
+
+    <!-- Modal Header -->
+    <div class="share-modal-header">
+
+      <div>
+        <h2 id="shareModalTitle">
+          <i class="fa-solid fa-share-nodes"></i>
+          Share Note
+        </h2>
+
+        <p>Share this note with your friends and classmates.</p>
+      </div>
+
+      <button
+        type="button"
+        class="share-modal-close"
+        id="shareModalClose"
+        aria-label="Close share dialog"
+      >
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+    </div>
+
+
+    <!-- Note Preview -->
+    <div class="share-note-preview">
+
+      <div class="share-note-icon">
+        <i class="fa-solid fa-file-lines"></i>
+      </div>
+
+      <div class="share-note-info">
+
+        <h3 id="shareNoteTitle">
+          <%= contribution.title %>
+        </h3>
+
+        <span>
+          <%= contribution.subject %>
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- Link -->
+    <div class="share-link-container">
+
+      <div class="share-link-input-wrapper">
+
+        <i class="fa-solid fa-link"></i>
+
+        <input
+          type="text"
+          id="shareNoteUrl"
+          readonly
+        >
+
+      </div>
+
+      <button
+        type="button"
+        class="share-copy-btn"
+        id="copyShareLinkBtn"
+      >
+        <i class="fa-regular fa-copy"></i>
+        <span>Copy</span>
+      </button>
+
+    </div>
+
+
+    <!-- Copy success message -->
+    <p
+      class="share-copy-success"
+      id="shareCopySuccess"
+      aria-live="polite"
+    >
+      <i class="fa-solid fa-check"></i>
+      Link copied!
+    </p>
+
+
+    <!-- Social Share Options -->
+    <div class="share-options">
+
+      <!-- WhatsApp -->
+      <a
+        href="#"
+        class="share-option whatsapp"
+        id="shareWhatsApp"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="share-option-icon">
+          <i class="fa-brands fa-whatsapp"></i>
+        </span>
+
+        <span>WhatsApp</span>
+      </a>
+
+
+      <!-- Telegram -->
+      <a
+        href="#"
+        class="share-option telegram"
+        id="shareTelegram"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="share-option-icon">
+          <i class="fa-brands fa-telegram"></i>
+        </span>
+
+        <span>Telegram</span>
+      </a>
+
+
+      <!-- Email -->
+      <a
+        href="#"
+        class="share-option email"
+        id="shareEmail"
+      >
+        <span class="share-option-icon">
+          <i class="fa-solid fa-envelope"></i>
+        </span>
+
+        <span>Email</span>
+      </a>
+
+
+      <!-- Facebook -->
+      <a
+        href="#"
+        class="share-option facebook"
+        id="shareFacebook"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="share-option-icon">
+          <i class="fa-brands fa-facebook-f"></i>
+        </span>
+
+        <span>Facebook</span>
+      </a>
+
+
+      <!-- X -->
+      <a
+        href="#"
+        class="share-option x"
+        id="shareX"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="share-option-icon">
+          <i class="fa-brands fa-x-twitter"></i>
+        </span>
+
+        <span>X</span>
+      </a>
+
+
+      <!-- Native Share -->
+      <button
+        type="button"
+        class="share-option more"
+        id="nativeShareBtn"
+      >
+        <span class="share-option-icon">
+          <i class="fa-solid fa-ellipsis"></i>
+        </span>
+
+        <span>More</span>
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

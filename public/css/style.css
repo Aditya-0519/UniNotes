@@ -2200,3 +2200,514 @@ label{
     border:none;
     pointer-events:auto;
 }
+
+/* ==========================================================================
+   Share Note
+   ========================================================================== */
+
+.share-note-btn {
+    margin-left: auto;
+}
+
+
+/* --------------------------------------------------------------------------
+   Modal
+   -------------------------------------------------------------------------- */
+
+.share-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 1rem;
+
+    visibility: hidden;
+    opacity: 0;
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+}
+
+.share-modal.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* Dark overlay */
+
+.share-modal-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+
+/* Modal */
+
+.share-modal-content {
+    position: relative;
+
+    width: 100%;
+    max-width: 520px;
+
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+
+    background: var(--bg-card);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 1.25rem;
+
+    padding: 1.5rem;
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.35);
+
+    transform: translateY(15px) scale(0.98);
+
+    transition:
+        transform 0.2s ease;
+}
+
+.share-modal.active .share-modal-content {
+    transform: translateY(0) scale(1);
+}
+
+
+/* Prevent background scrolling */
+
+body.share-modal-open {
+    overflow: hidden;
+}
+
+
+/* --------------------------------------------------------------------------
+   Header
+   -------------------------------------------------------------------------- */
+
+.share-modal-header {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    margin-bottom: 1.25rem;
+}
+
+.share-modal-header h2 {
+    margin: 0;
+
+    color: var(--text-main);
+
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.share-modal-header h2 i {
+    color: var(--primary);
+
+    margin-right: 0.4rem;
+}
+
+.share-modal-header p {
+    margin: 0.35rem 0 0;
+
+    color: var(--text-muted);
+
+    font-size: 0.875rem;
+}
+
+
+.share-modal-close {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 50%;
+
+    background: var(--bg-main);
+
+    color: var(--text-muted);
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.share-modal-close:hover {
+    color: var(--text-main);
+
+    border-color: var(--primary);
+
+    transform: rotate(90deg);
+}
+
+
+/* --------------------------------------------------------------------------
+   Note Preview
+   -------------------------------------------------------------------------- */
+
+.share-note-preview {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.85rem;
+
+    padding: 1rem;
+
+    margin-bottom: 1rem;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 0.85rem;
+
+    background: var(--bg-main);
+}
+
+.share-note-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 0.7rem;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    font-size: 1.15rem;
+}
+
+.share-note-info {
+    min-width: 0;
+}
+
+.share-note-info h3 {
+    margin: 0;
+
+    color: var(--text-main);
+
+    font-size: 0.95rem;
+    font-weight: 650;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.share-note-info span {
+    display: block;
+
+    margin-top: 0.25rem;
+
+    color: var(--text-muted);
+
+    font-size: 0.78rem;
+}
+
+
+/* --------------------------------------------------------------------------
+   Link
+   -------------------------------------------------------------------------- */
+
+.share-link-container {
+    display: flex;
+
+    gap: 0.5rem;
+
+    margin-bottom: 0.5rem;
+}
+
+.share-link-input-wrapper {
+    position: relative;
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+.share-link-input-wrapper i {
+    position: absolute;
+
+    left: 0.85rem;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: var(--text-muted);
+
+    pointer-events: none;
+}
+
+.share-link-input-wrapper input {
+    width: 100%;
+
+    height: 44px;
+
+    padding:
+        0.65rem
+        0.75rem
+        0.65rem
+        2.3rem;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 0.65rem;
+
+    background: var(--bg-main);
+
+    color: var(--text-main);
+
+    font-size: 0.78rem;
+
+    outline: none;
+}
+
+.share-link-input-wrapper input:focus {
+    border-color: var(--primary);
+}
+
+
+.share-copy-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.4rem;
+
+    height: 44px;
+
+    padding: 0 1rem;
+
+    border: none;
+
+    border-radius: 0.65rem;
+
+    background: var(--primary);
+
+    color: #ffffff;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+
+    white-space: nowrap;
+}
+
+.share-copy-btn:hover {
+    background: var(--primary-hover);
+
+    transform: translateY(-1px);
+}
+
+
+/* Copy success */
+
+.share-copy-success {
+    display: none;
+
+    margin: 0.45rem 0 1rem;
+
+    color: #10b981;
+
+    font-size: 0.8rem;
+
+    font-weight: 600;
+}
+
+.share-copy-success.show {
+    display: block;
+}
+
+
+/* --------------------------------------------------------------------------
+   Share Options
+   -------------------------------------------------------------------------- */
+
+.share-options {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 0.75rem;
+
+    margin-top: 1.25rem;
+}
+
+.share-option {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.5rem;
+
+    min-height: 82px;
+
+    padding: 0.75rem;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 0.85rem;
+
+    background: var(--bg-main);
+
+    color: var(--text-main);
+
+    text-decoration: none;
+
+    font-size: 0.78rem;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.share-option:hover {
+    transform: translateY(-3px);
+
+    border-color: var(--primary);
+
+    color: var(--primary);
+
+    box-shadow: var(--shadow-sm);
+}
+
+
+.share-option-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--border-color);
+
+    font-size: 1.05rem;
+}
+
+
+/* Brand hover states */
+
+.share-option.whatsapp:hover {
+    color: #25d366;
+    border-color: #25d366;
+}
+
+.share-option.telegram:hover {
+    color: #229ed9;
+    border-color: #229ed9;
+}
+
+.share-option.email:hover {
+    color: #ea4335;
+    border-color: #ea4335;
+}
+
+.share-option.facebook:hover {
+    color: #1877f2;
+    border-color: #1877f2;
+}
+
+
+/* --------------------------------------------------------------------------
+   Mobile
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 576px) {
+
+    .share-modal {
+        align-items: flex-end;
+
+        padding: 0;
+    }
+
+    .share-modal-content {
+
+        max-width: none;
+
+        max-height: 90vh;
+
+        border-radius:
+            1.25rem
+            1.25rem
+            0
+            0;
+
+        padding: 1.25rem;
+
+        transform:
+            translateY(100%);
+    }
+
+    .share-modal.active .share-modal-content {
+        transform:
+            translateY(0);
+    }
+
+    .share-options {
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 0.6rem;
+    }
+
+    .share-option {
+        min-height: 76px;
+    }
+
+    .share-option-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .share-link-container {
+        flex-direction: column;
+    }
+
+    .share-copy-btn {
+        width: 100%;
+    }
+
+    .share-note-btn {
+        margin-left: 0;
+    }
+
+}
