@@ -2712,91 +2712,89 @@ body.share-modal-open {
 
 }
 
-/* ================================
-   Share button - action bar fix
-   ================================ */
-
-.btn-action.share-note-btn {
-    flex: 0 1 auto;
-    min-width: 0;
-    max-width: 100%;
-    box-sizing: border-box;
-    white-space: nowrap;
-}
-
-.btn-action.share-note-btn i {
-    flex-shrink: 0;
-}
-
-.btn-action.share-note-btn span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.note-actions,
-.action-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-@media (max-width: 576px) {
-    .btn-action.share-note-btn {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-}
-
-/* =========================================
-   MOBILE NOTE ACTIONS - 3 BUTTON LAYOUT
-   ========================================= */
+/* =========================================================
+   MOBILE NOTE ACTION BAR
+   Clean 3-button layout
+   ========================================================= */
 
 @media (max-width: 576px) {
 
     .detail-actions-bar {
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 0.5rem;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.65rem;
         width: 100%;
+        box-sizing: border-box;
         overflow: hidden;
     }
 
-    /* Bookmark and Like forms */
+    /* Bookmark + Like forms */
     .detail-actions-bar > form {
-        flex: 1 1 0;
-        min-width: 0;
-        width: 0;
-    }
-
-    /* All action buttons */
-    .detail-actions-bar .btn-action {
+        display: block;
         width: 100%;
         min-width: 0;
-        padding: 0.6rem 0.4rem;
-        gap: 0.3rem;
-        justify-content: center;
-        font-size: 0.8rem;
-        white-space: nowrap;
+        margin: 0;
+    }
+
+    /* All three action buttons */
+    .detail-actions-bar > form > .btn-action,
+    .detail-actions-bar > .share-note-btn {
+        width: 100%;
+        min-width: 0;
+        height: 52px;
+        padding: 0.5rem;
+        margin: 0;
         box-sizing: border-box;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 0.35rem;
+        border-radius: var(--radius-full);
+
+        font-size: 0.95rem;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    /* Hide text labels on mobile */
+    .detail-actions-bar .btn-action > span:not(.count-badge) {
+        display: none;
+    }
+
+    .detail-actions-bar .share-note-btn > span {
+        display: none;
+    }
+
+    /* Action icons */
+    .detail-actions-bar .btn-action > i,
+    .detail-actions-bar .share-note-btn > i {
+        font-size: 1.25rem;
+        margin: 0;
+        flex-shrink: 0;
+    }
+
+    /* Like count remains visible */
+    .detail-actions-bar .count-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-width: 24px;
+        height: 24px;
+
+        padding: 0 0.35rem;
+        margin-left: 0.1rem;
+
+        font-size: 0.75rem;
+        line-height: 1;
+        flex-shrink: 0;
     }
 
     /* Share button */
     .detail-actions-bar .share-note-btn {
-        flex: 1 1 0;
-        min-width: 0;
+        flex: none;
     }
 
-    /* Smaller icons */
-    .detail-actions-bar .btn-action i {
-        font-size: 0.95rem;
-        flex-shrink: 0;
-    }
-
-    /* Like count */
-    .detail-actions-bar .count-badge {
-        padding: 0.08rem 0.35rem;
-        font-size: 0.7rem;
-    }
 }
