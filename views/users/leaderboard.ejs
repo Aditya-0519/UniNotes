@@ -22,9 +22,24 @@
             <div class="podium-badge silver">
               <i class="fa-solid fa-medal"></i> 2
             </div>
-            <div class="podium-avatar">
-              <i class="fa-solid fa-user-graduate"></i>
-            </div>
+            <a href="/users/<%= users[1]._id %>" class="podium-avatar-link">
+  <div class="podium-avatar">
+    <% if (users[1].avatar) { %>
+      <img
+        src="<%= users[1].avatar %>"
+        alt="<%= users[1].fullName %>"
+        class="podium-avatar-image"
+      >
+    <% } else { %>
+      <span>
+        <%= users[1].fullName
+          ? users[1].fullName.charAt(0).toUpperCase()
+          : "U"
+        %>
+      </span>
+    <% } %>
+  </div>
+</a>
             <h3 class="podium-name">
               <a href="/users/<%= users[1]._id %>"><%= users[1].fullName %></a>
             </h3>
@@ -51,9 +66,24 @@
             <div class="podium-badge gold">
               <i class="fa-solid fa-trophy"></i> 1
             </div>
-            <div class="podium-avatar hero">
-              <i class="fa-solid fa-user-astronaut"></i>
-            </div>
+            <a href="/users/<%= users[0]._id %>" class="podium-avatar-link">
+  <div class="podium-avatar hero">
+    <% if (users[0].avatar) { %>
+      <img
+        src="<%= users[0].avatar %>"
+        alt="<%= users[0].fullName %>"
+        class="podium-avatar-image"
+      >
+    <% } else { %>
+      <span>
+        <%= users[0].fullName
+          ? users[0].fullName.charAt(0).toUpperCase()
+          : "U"
+        %>
+      </span>
+    <% } %>
+  </div>
+</a>
             <h3 class="podium-name">
               <a href="/users/<%= users[0]._id %>"><%= users[0].fullName %></a>
             </h3>
@@ -77,9 +107,24 @@
             <div class="podium-badge bronze">
               <i class="fa-solid fa-award"></i> 3
             </div>
-            <div class="podium-avatar">
-              <i class="fa-solid fa-user-tie"></i>
-            </div>
+            <a href="/users/<%= users[2]._id %>" class="podium-avatar-link">
+  <div class="podium-avatar">
+    <% if (users[2].avatar) { %>
+      <img
+        src="<%= users[2].avatar %>"
+        alt="<%= users[2].fullName %>"
+        class="podium-avatar-image"
+      >
+    <% } else { %>
+      <span>
+        <%= users[2].fullName
+          ? users[2].fullName.charAt(0).toUpperCase()
+          : "U"
+        %>
+      </span>
+    <% } %>
+  </div>
+</a>
             <h3 class="podium-name">
               <a href="/users/<%= users[2]._id %>"><%= users[2].fullName %></a>
             </h3>
@@ -141,12 +186,33 @@
 
                 <!-- User Name -->
                 <td>
-                  <div class="d-flex align-items-center gap-2">
-                    <a href="/users/<%= user._id %>" class="user-table-link">
-                      <%= user.fullName %>
-                    </a>
-                  </div>
-                </td>
+  <div class="leaderboard-user">
+    
+    <a href="/users/<%= user._id %>" class="leaderboard-avatar-link">
+      <div class="leaderboard-avatar">
+        <% if (user.avatar) { %>
+          <img
+            src="<%= user.avatar %>"
+            alt="<%= user.fullName %>"
+            class="leaderboard-avatar-image"
+          >
+        <% } else { %>
+          <span>
+            <%= user.fullName
+              ? user.fullName.charAt(0).toUpperCase()
+              : "U"
+            %>
+          </span>
+        <% } %>
+      </div>
+    </a>
+
+    <a href="/users/<%= user._id %>" class="user-table-link">
+      <%= user.fullName %>
+    </a>
+
+  </div>
+</td>
 
                 <!-- Institution -->
                 <td class="institution-cell">

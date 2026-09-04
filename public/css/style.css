@@ -3260,3 +3260,95 @@ body.share-modal-open {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
+
+/* =========================================
+   Leaderboard Avatars
+========================================= */
+
+.podium-avatar-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.podium-avatar {
+    overflow: hidden;
+}
+
+.podium-avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.podium-avatar-link:hover .podium-avatar {
+    transform: scale(1.04);
+}
+
+.podium-avatar {
+    transition: transform 0.2s ease;
+}
+
+
+/* Leaderboard table user */
+
+.leaderboard-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.leaderboard-avatar-link {
+    display: flex;
+    text-decoration: none;
+    color: inherit;
+    flex-shrink: 0;
+}
+
+.leaderboard-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--primary-light);
+    color: var(--primary);
+
+    font-size: 15px;
+    font-weight: 700;
+
+    transition: transform 0.2s ease;
+}
+
+.leaderboard-avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.leaderboard-avatar-link:hover .leaderboard-avatar {
+    transform: scale(1.05);
+}
+
+@media (max-width: 576px) {
+
+    .leaderboard-user {
+        gap: 9px;
+    }
+
+    .leaderboard-avatar {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        font-size: 14px;
+    }
+
+}

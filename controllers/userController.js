@@ -83,13 +83,14 @@ exports.profile = catchAsync(async (req, res) => {
 
 exports.leaderboard = catchAsync(async (req, res) => {
 
-    const users = await User.find({})
+    const users = await User.find({
+        role: { $ne: "admin" }
+    })
         .populate("institution", "shortName name")
         .sort({
             reputation: -1,
             contributionCount: -1
-        })
-        .limit(50);
+        });
 
     res.render("users/leaderboard", {
         users,
