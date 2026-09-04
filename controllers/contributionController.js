@@ -30,7 +30,10 @@ exports.index = catchAsync(async (req, res) => {
                 ? { score: { $meta: "textScore" } }
                 : {}
         )
-        .populate("contributor", "fullName reputation contributionCount")
+        .populate(
+    "contributor",
+    "fullName reputation contributionCount avatar"
+)
         .populate("institution", "name shortName city state isVerified")
         .sort(
             search
@@ -139,7 +142,10 @@ exports.create = catchAsync(async (req, res) => {
 exports.show = catchAsync(async (req, res) => {
 
     const contribution = await Contribution.findById(req.params.id)
-    .populate("contributor", "fullName reputation contributionCount")
+    .populate(
+    "contributor",
+    "fullName reputation contributionCount avatar"
+)
     .populate("institution", "name shortName city state isVerified")
     .populate({
         path: "comments",

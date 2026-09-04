@@ -130,20 +130,51 @@
               <!-- Card Footer -->
               <div class="card-footer">
                 <div class="author-info">
-                  <div class="author-avatar">
-                    <%= contrib.contributor?.fullName ? contrib.contributor.fullName.charAt(0).toUpperCase() : 'U' %>
-                  </div>
-                  <div class="author-details">
-                    <a href="/users/<%= contrib.contributor?._id %>" class="author-name">
-                      <%= contrib.contributor?.fullName || 'Anonymous' %>
-                    </a>
-                    <% if (contrib.contributor?.reputation) { %>
-                      <span class="author-reputation">
-                        <i class="fa-solid fa-star"></i> <%= contrib.contributor.reputation %> pts
-                      </span>
-                    <% } %>
-                  </div>
-                </div>
+
+  <a
+    href="/users/<%= contrib.contributor?._id %>"
+    class="author-profile-link"
+  >
+
+    <div class="author-avatar">
+      <% if (contrib.contributor?.avatar) { %>
+
+        <img
+          src="<%= contrib.contributor.avatar %>"
+          alt="<%= contrib.contributor.fullName || 'User' %>"
+          class="author-avatar-image"
+        >
+
+      <% } else { %>
+
+        <span>
+          <%= contrib.contributor?.fullName
+            ? contrib.contributor.fullName.charAt(0).toUpperCase()
+            : 'U'
+          %>
+        </span>
+
+      <% } %>
+    </div>
+
+    <div class="author-details">
+
+      <span class="author-name">
+        <%= contrib.contributor?.fullName || 'Anonymous' %>
+      </span>
+
+      <% if (contrib.contributor?.reputation) { %>
+        <span class="author-reputation">
+          <i class="fa-solid fa-star"></i>
+          <%= contrib.contributor.reputation %> pts
+        </span>
+      <% } %>
+
+    </div>
+
+  </a>
+
+</div>
 
                 <a href="/contributions/<%= contrib._id %>" class="btn-card-action">
                   <span>Read</span>
